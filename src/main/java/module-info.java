@@ -1,4 +1,4 @@
-module engg1420_project.universitymanagementsystem {
+module com.example.engg1420facultymanagement {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -10,7 +10,8 @@ module engg1420_project.universitymanagementsystem {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.desktop;
 
-    opens engg1420_project.universitymanagementsystem to javafx.fxml;
-    exports engg1420_project.universitymanagementsystem;
+    opens com.example.engg1420facultymanagement to javafx.fxml;
+    exports com.example.engg1420facultymanagement;
 }

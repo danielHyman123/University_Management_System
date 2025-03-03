@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ENGG1420_Project</groupId>
-    <artifactId>University-Management-System</artifactId>
+    <groupId>com.example</groupId>
+    <artifactId>ENGG1420FacultyManagement</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>University-Management-System</name>
+    <name>ENGG1420FacultyManagement</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -134,7 +134,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                engg1420_project.universitymanagementsystem/engg1420_project.universitymanagementsystem.HelloApplication
+                                com.example.engg1420facultymanagement/com.example.engg1420facultymanagement.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
