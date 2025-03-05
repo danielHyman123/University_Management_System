@@ -14,20 +14,21 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Group root = new Group();
         stage = new Stage();
         Scene test = new Scene(root, 600, 600, Color.LIGHTGRAY);
-//        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("University Management System!");
 
         //Text
         Text text = new Text();
         text.setText("University Management System");
         text.setFont(Font.font("Verdana", 50));
-        text.setX(50);
-        text.setY(50);
+        text.setX(350);
+        text.setY(100);
         text.setFill(Color.BLACK);
+
 
         Line line = new Line();
         line.setStartX(100);
