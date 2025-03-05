@@ -9,6 +9,7 @@ module engg1420group2.universitymanagementsystem.studentmanagement {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires java.sql;
 
     opens engg1420group2.universitymanagementsystem.studentmanagement to javafx.fxml;
     exports engg1420group2.universitymanagementsystem.studentmanagement;

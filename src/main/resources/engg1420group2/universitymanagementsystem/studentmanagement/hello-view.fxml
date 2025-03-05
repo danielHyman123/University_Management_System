@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="engg1420group2.universitymanagementsystem.studentmanagement.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="engg1420group2.universitymanagementsystem.studentmanagement.HelloController">
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+   <children>
+      <ListView fx:id="studentList" layoutX="124.0" layoutY="80.0" prefHeight="320.0" prefWidth="476.0" />
+      <Label fx:id="title_studentList" layoutX="120.0" layoutY="60.0" text=" Student List" />
+      <Button fx:id="sceneSwitch" layoutX="25.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleButton" text="Button" />
+      <Label layoutX="11.0" layoutY="14.0" text="Student Management System">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
