@@ -27,21 +27,20 @@ public class HelloController {
     @FXML
     private ListView<String> studentList;
     @FXML
-    private Button button_testSwitchScene;
-    private Button button_addStd;
-    private Button button_deleteStd;
+    private Button button_testSwitchScene, button_addStd, button_deleteStd;
+
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
 
-
     @FXML
-    void student(ActionEvent event) throws IOException {
+    void viewStudent(ActionEvent event) throws IOException {
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("StudentInfo.fxml"));
+
 
             // Load the scene from the FXML file
             Parent root = fxmlLoader.load();
@@ -60,6 +59,38 @@ public class HelloController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void addOrEdit(ActionEvent event) throws IOException {
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AddStudent.fxml"));
+
+            // Load the scene from the FXML file
+            Parent root = fxmlLoader.load();
+
+            // Create a new stage (window)
+            Stage newStage = new Stage();
+
+            // Create a new scene and set it for the new stage
+            Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
+            newStage.setTitle("Edit/Add Student Information");
+
+            // Set the scene to the new stage and show it
+            newStage.setScene(scene);
+            newStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    void buttom_delete(ActionEvent event) throws IOException {
+        studentList.getItems().remove(studentList.getSelectionModel().getSelectedIndex());
+
     }
 
 
@@ -109,9 +140,9 @@ public class HelloController {
 
             ContextMenu contextMenu = new ContextMenu();
 
-            MenuItem editProfile = new MenuItem();
-            editProfile.textProperty().bind(Bindings.format("View Profile for \"%s\"", cell.itemProperty()));
-            editProfile.setOnAction(event -> {
+            MenuItem viewProfile = new MenuItem();
+            viewProfile.textProperty().bind(Bindings.format("View Profile for \"%s\"", cell.itemProperty()));
+            viewProfile.setOnAction(event -> {
                 String item = cell.getItem();
 
                 try {
@@ -135,8 +166,38 @@ public class HelloController {
                 }
             });
 
+            MenuItem addProfile = new MenuItem();
+            addProfile.textProperty().bind(Bindings.format("Edit Profile for \"%s\"", cell.itemProperty()));
+            addProfile.setOnAction(event -> {
+                String item = cell.getItem();
 
-            contextMenu.getItems().add(editProfile);
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AddStudent.fxml"));
+
+                    // Load the scene from the FXML file
+                    Parent root = fxmlLoader.load();
+
+                    // Create a new stage (window)
+                    Stage newStage = new Stage();
+
+                    // Create a new scene and set it for the new stage
+                    Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
+                    newStage.setTitle("Add/Edit Profile");
+
+                    // Set the scene to the new stage and show it
+                    newStage.setScene(scene);
+                    newStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            MenuItem deleteItem = new MenuItem();
+            deleteItem.textProperty().bind(Bindings.format("Delete \"%s\"", cell.itemProperty()));
+            deleteItem.setOnAction(event -> studentList.getItems().remove(cell.getItem()));
+
+
+            contextMenu.getItems().addAll(viewProfile, deleteItem, addProfile);
 
             cell.textProperty().bind(cell.itemProperty());
 

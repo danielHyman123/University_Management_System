@@ -1,6 +1,5 @@
 package engg1420group2.universitymanagementsystem.studentmanagement;
 
-
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +19,11 @@ import java.util.HashMap;
 
 public class InfoController  {
 
+
+
+   private sharedModel sm = new sharedModel();
+   // private String target;
+
     @FXML
     private ListView<String> courseListView;
 
@@ -27,35 +31,42 @@ public class InfoController  {
     @FXML
     private Label label_studentName, label_studentid, label_address, label_phone, label_email;
 
-    HashMap<String, Student> studentHashMap = new HashMap<String, Student>();
-
-    Student Ky = new Student("Kyle", "545 Happy Street", "911", "Kyle@gmail.com", "Research", "Undergrad" );
-    Student Da = new Student("Daniel", "222 Less Happy Cresent", "226-500-1567", "DannyH@hotmail.com", "Research", "Undergrad" );
-    Student Ac = new Student("Achebe", "535 Normal Road", "519-232-4532", "Achebe123@gmail.com", "Research", "Undergrad" );
-    Student An = new Student("Anthony", "1 Upset Street", "519-243-5343", "AntAnthony@gmail.com", "Research", "Undergrad" );
-    Student Ma = new Student("Mateo", "45 Angry Road", "226-345-0987", "Mateo@gmail.com", "Research", "Undergrad" );
-
-
     @FXML
     public void initialize() {
 
-        courseListView.getItems().addAll("ENGG 1500", "ENGG 1420", "ENGG 1210", "MATH 1210", "PHYS 1010");
+      //  courseListView.getItems().addAll("ENGG 1500", "ENGG 1420", "ENGG 1210", "MATH 1210", "PHYS 1010");
+       // initData(sm, sharedModel.getSelectedName());
 
 
         String target = sharedModel.getSelectedName();
-        studentHashMap.put("Kyle", Ky);
-        studentHashMap.put("Daniel", Da);
-        studentHashMap.put("Achebe", Ac);
-        studentHashMap.put("Anthony", An);
-        studentHashMap.put("Mateo", Ma);
 
-        label_studentName.setText(studentHashMap.get(target).getName());
+        label_studentName.setText(sm.getValueForKey(target).getName());
         //label_studentid.setText(studentHashMap.get(target).getId());
-        label_address.setText(studentHashMap.get(target).getAddress());
+        label_address.setText(sm.getValueForKey(target).getAddress());
        // label_phone.setText(studentHashMap.get(target).getPhone());
-        label_email.setText(studentHashMap.get(target).getEmail());
+        label_email.setText(sm.getValueForKey(target).getEmail());
+
+
 
     }
+
+/*
+    public void initData(sharedModel dataStorage, String studentKey) {
+        dataStorage = sm;
+        studentKey = target;
+
+        // Initialize the fields with the current values
+        Student std = dataStorage.getValueForKey(studentKey);
+
+        label_studentName.setText(std.getName());
+        //label_studentid.setText(std.getId());
+        label_address.setText(std.getAddress());
+        // label_phone.setText(std.getPhone());
+        label_email.setText(std.getEmail());
+
+    }
+
+ */
 
     @FXML
     void management(ActionEvent event) throws IOException {
