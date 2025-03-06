@@ -17,5 +17,6 @@
       <TextField fx:id="tfAddress" layoutX="17.0" layoutY="154.0" promptText="Address" />
       <Button fx:id="button_Save" layoutX="17.0" layoutY="220.0" mnemonicParsing="false" onAction="#saveChanges" text="Save Changes" />
       <Label fx:id="label_ID" layoutX="17.0" layoutY="192.0" text="Example ID" />
+      <Button fx:id="button_exit" layoutX="565.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
    </children>
 </Pane>
