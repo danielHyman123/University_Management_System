@@ -3,37 +3,19 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<VBox alignment="LEFT" prefHeight="329.0" prefWidth="225.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="engg1420_project.universitymanagementsystem.HelloController">
+<BorderPane prefHeight="200.0" prefWidth="200.0" >
+<VBox fx:id="subject_management" alignment="CENTER_LEFT" prefHeight="329.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="engg1420_project.universitymanagementsystem.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label fx:id="welcomeText" />
-    <Button onAction="#onHelloButtonClick" prefHeight="25.0" prefWidth="140.0" text="Dashboard" />
-   <ButtonBar prefHeight="40.0" prefWidth="200.0">
-     <buttons>
-       <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Subject Management" />
-     </buttons>
-   </ButtonBar>
-   <ButtonBar prefHeight="40.0" prefWidth="200.0">
-     <buttons>
-       <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Event Management" />
-     </buttons>
-   </ButtonBar>
-   <ButtonBar prefHeight="40.0" prefWidth="200.0">
-     <buttons>
-       <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Course Management" />
-     </buttons>
-   </ButtonBar>
-   <ButtonBar prefHeight="40.0" prefWidth="200.0">
-     <buttons>
-       <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Student Management" />
-     </buttons>
-   </ButtonBar>
-   <ButtonBar prefHeight="40.0" prefWidth="200.0">
-     <buttons>
-       <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Faculty Management" />
-     </buttons>
-   </ButtonBar>
-</VBox>
+<!--    <Label fx:id="welcomeText" />-->
+<!--    <Button onAction="#onHelloButtonClick" prefHeight="25.0" prefWidth="140.0" text="Dashboard" />-->
+   <Button mnemonicParsing="false" text="Dashboard" />
+   <Button mnemonicParsing="false" text="Student Management" />
+   <Button mnemonicParsing="false" text="Faculty Management" />
+   <Button mnemonicParsing="false" text="Course Management" />
+   <Button mnemonicParsing="false" text="Event Management" />
+   <Button mnemonicParsing="false" text="Subject Management" />
+    </VBox>
+</BorderPane>
