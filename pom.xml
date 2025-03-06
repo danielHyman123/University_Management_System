@@ -16,6 +16,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.ethankiers.databasemanagement</groupId>
+            <artifactId>DatabaseManager</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/DatabaseManager.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>17.0.6</version>

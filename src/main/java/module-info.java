@@ -10,7 +10,9 @@ module com.example.engg1420facultymanagement {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.desktop;
+    requires org.apache.poi.ooxml;
+    requires org.apache.logging.log4j;
+    requires java.sql;
 
     opens com.example.engg1420facultymanagement to javafx.fxml;
     exports com.example.engg1420facultymanagement;
