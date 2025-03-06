@@ -14,7 +14,7 @@ public class Student {
     //current semester
     //registered classes
     //subjects registerd
-    //academic level
+    private String academicLvl;
     private String thesis_title;
     //progress
 
@@ -24,12 +24,27 @@ public class Student {
 
     }
 
-    public Student(String name, String address, String phone, String email, String thesis_title) {
+    public Student(String name, String address, String phone, String email, String thesis_title, String academicLvl) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.thesis_title = thesis_title;
+
+        switch(academicLvl) {
+            case "Undergrad":
+                tution = 5000;
+                break;
+            case "Graduate":
+                tution = 7000;
+                break;
+            case "PhD":
+                tution = 10000;
+                break;
+            default:
+                tution = 5000;
+                break;
+        }
     }
 
     public String getName() {
@@ -54,6 +69,10 @@ public class Student {
 
     public String getThesis_title() {
         return thesis_title;
+    }
+
+    public String getAcademicLvl() {
+        return academicLvl;
     }
 
 

@@ -1,6 +1,10 @@
 package engg1420group2.universitymanagementsystem.studentmanagement;
 
 
+import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -16,57 +20,61 @@ import java.util.HashMap;
 
 
 
-public class HelloController implements Initializable {
+public class HelloController {
     @FXML
     private Label title_studentList;
 
     @FXML
     private ListView<String> studentList;
     @FXML
-    private Button sceneSwitch;
+    private Button button_testSwitchScene;
+    private Button button_addStd;
+    private Button button_deleteStd;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    public void handleButton(ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("StudentInfo.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-
-        /*
-
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("StudentInfo.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
-        stage.setTitle("Student Management System");
-        stage.setScene(scene);
-        stage.show();
-
-         */
-    }
 
     @FXML
-    public void initialize(URL location, ResourceBundle resources) {
+    void student(ActionEvent event) throws IOException {
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("StudentInfo.fxml"));
+
+            // Load the scene from the FXML file
+            Parent root = fxmlLoader.load();
+
+            // Create a new stage (window)
+            Stage newStage = new Stage();
+
+            // Create a new scene and set it for the new stage
+            Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
+            newStage.setTitle("Student Information");
+
+            // Set the scene to the new stage and show it
+            newStage.setScene(scene);
+            newStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @FXML
+    public void initialize() {
 
         studentList.getItems().addAll("Kyle", "Daniel", "Achebe", "Anthony", "Mateo");
         title_studentList.setText("Student Management Update");
 
-        HashMap<String, Student> studentHashMap = new HashMap<String, Student>();
 
-        Student Ky = new Student("Kyle", "Address", "55555", "email@email.com", "Research" );
-        Student Da = new Student("Daniel", "Address", "55555", "email@email.com", "Research" );
-        Student Ac = new Student("Achebe", "Address", "55555", "email@email.com", "Research" );
-        Student An = new Student("Anthony", "Address", "55555", "email@email.com", "Research" );
-        Student Ma = new Student("Mateo", "Address", "55555", "email@email.com", "Research" );
-
-        studentHashMap.put("Kyle", Ky);
-        studentHashMap.put("Daniel", Da);
-        studentHashMap.put("Achebe", Ac);
-        studentHashMap.put("Anthony", An);
-        studentHashMap.put("Mateo", Ma);
+        // Add listener to ListView selection
+        studentList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            sharedModel.setSelectedName(newValue);  // Save the selected name to SharedModel
+        });
 
 
 
@@ -95,11 +103,58 @@ public class HelloController implements Initializable {
 
          */
 
+        studentList.setCellFactory(lv -> {
 
+            ListCell<String> cell = new ListCell<>();
+
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem editProfile = new MenuItem();
+            editProfile.textProperty().bind(Bindings.format("View Profile for \"%s\"", cell.itemProperty()));
+            editProfile.setOnAction(event -> {
+                String item = cell.getItem();
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("StudentInfo.fxml"));
+
+                    // Load the scene from the FXML file
+                    Parent root = fxmlLoader.load();
+
+                    // Create a new stage (window)
+                    Stage newStage = new Stage();
+
+                    // Create a new scene and set it for the new stage
+                    Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
+                    newStage.setTitle("Student Information");
+
+                    // Set the scene to the new stage and show it
+                    newStage.setScene(scene);
+                    newStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+
+            contextMenu.getItems().add(editProfile);
+
+            cell.textProperty().bind(cell.itemProperty());
+
+            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                if (isNowEmpty) {
+                    cell.setContextMenu(null);
+                } else {
+                    cell.setContextMenu(contextMenu);
+                }
+            });
+            return cell;
+            });
 
     }
-
-
-
-
 }
+
+
+
+
+
+
