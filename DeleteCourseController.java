@@ -6,11 +6,12 @@ import javafx.stage.Stage;
 
 public class DeleteCourseController {
 
-    @FXML private Button deleteCourseButton; // Declare the button
+    @FXML private Button deleteCourseButton;
+    @FXML private Button goBackButton;
 
     @FXML
     private void goBack() {
-        Stage stage = (Stage) deleteCourseButton.getScene().getWindow();
+        Stage stage = (Stage) goBackButton.getScene().getWindow();
         stage.close();  // Close the current window
     }
 }

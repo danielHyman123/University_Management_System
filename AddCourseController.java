@@ -1,8 +1,10 @@
 package com.example.project;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ public class AddCourseController {
     @FXML private TextField lectureTimeField;
     @FXML private TextField locationField;
     @FXML private TextField finalExamDateTimeField;
+    @FXML private Button goBackButton;
 
     private List<Course> courseList = new ArrayList<>();
     // Method to handle the Add Course button click
@@ -42,12 +45,18 @@ public class AddCourseController {
             return;
         }
 
-
         Course newCourse = new Course(courseName, courseCode, subjectName, sectionNumber,
                 teacherName, capacity, lectureTime, location, finalExamDateTime);
 
         CourseManager.addCourse(newCourse);
         // Confirm course added
         statusLabel.setText("Course added: " + newCourse);
+
+    }
+
+    @FXML
+    private void goBack() {
+        Stage stage = (Stage) goBackButton.getScene().getWindow();
+        stage.close();
     }
 }

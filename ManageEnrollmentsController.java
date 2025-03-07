@@ -6,11 +6,12 @@ import javafx.stage.Stage;
 
 public class ManageEnrollmentsController {
 
-    @FXML private Button manageEnrollmentsButton; // Declare the button
+    @FXML private Button manageEnrollmentsButton;
+    @FXML private Button goBackButton;
 
     @FXML
     private void goBack() {
-        Stage stage = (Stage) manageEnrollmentsButton.getScene().getWindow();
+        Stage stage = (Stage) goBackButton.getScene().getWindow();
         stage.close();  // Close the current window
     }
 }

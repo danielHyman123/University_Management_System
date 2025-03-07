@@ -6,11 +6,12 @@ import javafx.stage.Stage;
 
 public class AssignFacultyController {
 
-    @FXML private Button assignFacultyButton; // Declare the button
+    @FXML private Button assignFacultyButton;
+    @FXML private Button goBackButton;// on
 
     @FXML
     private void goBack() {
-        Stage stage = (Stage) assignFacultyButton.getScene().getWindow();
+        Stage stage = (Stage) goBackButton.getScene().getWindow();
         stage.close();  // Close the current window
     }
 }

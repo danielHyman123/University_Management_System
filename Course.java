@@ -10,8 +10,6 @@ public class Course {
     private String location;
     private String finalExamDateTime;
 
-    //Course Calc = new Course();
-//"Calculus I", "MATH001", 1, "Mrs. " 300, "30 Mon/Wed 9-11 AM", "Place", "April 01/7:00-9:00pm"
     public Course(String courseName, int courseCode, String subjectName, int sectionNumber, String teacherName, int capacity, String lectureTime, String location, String finalExamDateTime) {
         this.courseName = courseName;
         this.courseCode = courseCode;

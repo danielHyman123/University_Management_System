@@ -10,7 +10,7 @@
             prefHeight="400.0" prefWidth="600.0">
 
     <VBox spacing="20" alignment="CENTER">
-        <Button fx:id="viewCoursesButton" text="View Enrolled Courses" onAction="#viewCourses"/>
+        <Button fx:id="viewCoursesButton" text="View Courses" onAction="#viewCourses"/>
         <Button fx:id="viewEnrollmentButton" text="View Enrollment" onAction="#viewEnrollment"/>
     </VBox>
 

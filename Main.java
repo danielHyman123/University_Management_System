@@ -5,22 +5,38 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class Main extends Application {
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        // Correct path with leading slash
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/Login.fxml"));
-        Parent root = loader.load();
 
-        // Get controller and set stage
-        LoginController controller = loader.getController();
-        controller.setStage(primaryStage);
+    public static String user = "Student"; // Manual login placeholder for testing
+
+    private Stage primaryStage;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
+        switchToView();
+    }
+
+    private void switchToView() throws IOException {
+        String fxmlFile = "";
+
+        if ("Admin".equals(user)) {
+            fxmlFile = "AdminView.fxml";
+        } else if ("Faculty".equals(user)) {
+            fxmlFile = "FacultyView.fxml";
+        } else if ("Student".equals(user)) {
+            fxmlFile = "StudentView.fxml";
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/" + fxmlFile));
+        Parent root = loader.load();
 
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Login");
+        primaryStage.setTitle(user + " View");
         primaryStage.show();
     }
 
