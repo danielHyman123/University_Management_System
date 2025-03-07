@@ -2,11 +2,8 @@ package engg1420_project.universitymanagementsystem;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,30 +11,13 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Group root = new Group();
-        stage = new Stage();
-        Scene test = new Scene(root, 600, 600, Color.LIGHTGRAY);
-//        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("University Management System!");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+        Parent root = fxmlLoader.load(); // Load the FXML file
 
-        //Text
-        Text text = new Text();
-        text.setText("EVENT");
-        text.setFont(Font.font("Verdana", 50));
-        text.setX(50);
-        text.setY(50);
-        text.setFill(Color.BLACK);
-
-        Line line = new Line();
-
-
-        root.getChildren().add(text);
-        root.getChildren().add(line);
-
-        stage.setScene(test);
-//        stage.setScene(scene);
-        stage.show();
+        Scene scene = new Scene(root); // Create a scene with the loaded FXML
+        stage.setTitle("University Management System");
+        stage.setScene(scene); // Set the scene
+        stage.show(); // Show the stage
     }
 
     public static void main(String[] args) {
