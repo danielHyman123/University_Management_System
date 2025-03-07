@@ -2,6 +2,11 @@ package engg1420group2.universitymanagementsystem.studentmanagement;
 
 import java.util.HashMap;
 
+/*
+This file has a sample hashmap that other classes can access
+Just so  I don't need multiple sample hashmaps set up
+ */
+
 public class sharedModel {
     private static String selectedName;
     //private HashMap<String, Student> studentHashMap = new HashMap<String, Student>();
@@ -18,6 +23,7 @@ public class sharedModel {
     }
 
     public sharedModel() {
+        //Creates and populates the hashmap with sample student files
         studentHashMap = new HashMap<>();
 
         Student Ky = new Student("Kyle", "545 Happy Street", "911", "Kyle@gmail.com", "Research", "Undergrad" );
@@ -38,11 +44,14 @@ public class sharedModel {
         return studentHashMap.get(key);
     }
 
+
+    //Ignore this stuff, It's not important to the first phase
+    //This is involved in getting the sample hashmap to update when different things are edited
     public HashMap<String, Student> getDataMap() {
         return studentHashMap;
     }
 
-
+//Same with this
     public void updatePerson(String key, Student person) {
         studentHashMap.put(key, person); // Update the custom object in the map
     }

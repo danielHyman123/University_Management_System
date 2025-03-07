@@ -1,6 +1,9 @@
 package engg1420group2.universitymanagementsystem.studentmanagement;
 import java.util.ArrayList;
 import java.util.Random;
+
+//Student Class
+//This should be pretty obvious what things do
 public class Student {
 
     private String name;

@@ -1,5 +1,7 @@
 package engg1420group2.universitymanagementsystem.studentmanagement;
 
+//You can probably just delete this
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 

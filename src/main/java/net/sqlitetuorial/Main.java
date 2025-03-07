@@ -3,6 +3,9 @@ package net.sqlitetuorial;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+//Database testing stuff
+//Probably good to just delete this
+
 public class Main {
 
     public static void connect() {
