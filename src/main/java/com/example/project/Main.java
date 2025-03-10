@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    public static String user = "Student"; // Manual login placeholder for testing
+    public static String user = "Admin"; // Manual login placeholder for testing
 
     private Stage primaryStage;
 
@@ -21,7 +21,7 @@ public class Main extends Application {
     }
 
     private void switchToView() throws IOException {
-        String fxmlFile = "";
+        String fxmlFile = "Admin";
 
         if ("Admin".equals(user)) {
             fxmlFile = "AdminView.fxml";
