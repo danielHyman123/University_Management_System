@@ -34,6 +34,8 @@ public class StdDashCtrl {
     private Scene scene;
     private Parent root;
 
+    //public static sharedDatabase db = new sharedDatabase();
+
     //View Student Button Script
     @FXML
     void viewStudent(ActionEvent event) throws IOException {
@@ -99,43 +101,24 @@ public class StdDashCtrl {
 
     @FXML
     public void initialize() {
+        Student std = new Student("New Student", "default123", "kegan@example.edu", "123 Main St", "555-5555", "Undergraduate", "Fall 2025", "Research", "50%");
+        sharedDatabase.addStudent("Student", std);
+        //sharedDatabase db = new sharedDatabase();
 
         //Populates the sample student list
-        studentList.getItems().addAll("Kyle", "Daniel", "Achebe", "Anthony", "Mateo");
+        for(int i = 0; i < sharedDatabase.stdNameList.size(); i++){
+            studentList.getItems().add(sharedDatabase.stdNameList.get(i));
+        }
+
         title_studentList.setText("Student Management Update");
 
         // Code of detecting what the user is selecting on the list
         // Add listener to ListView selection
         studentList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            sharedModel.setSelectedName(newValue);  // Save the selected name to SharedModel
+            sharedDatabase.setSelectedName(newValue);  // Save the selected name to SharedModel
         });
 
 
-
-        /*
-        databaseConnection connectNow = new databaseConnection();
-        Connection connectDB = connectNow.getDBConnection();
-
-        String connectQuery = "SELECT name, studentid FROM UMS_Data_Students";
-
-        try {
-            Statement statement = connectDB.createStatement();
-            ResultSet queryOutput = statement.executeQuery(connectQuery);
-
-            while (queryOutput.next()) {
-                String name = queryOutput.getString("name");
-                String username = queryOutput.getString("username");
-                String listOut = name + username;
-                studentList.getItems().add(listOut);
-
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-         */
 
 
         //Creates the right click menu

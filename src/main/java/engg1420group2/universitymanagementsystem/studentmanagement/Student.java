@@ -4,100 +4,105 @@ import java.util.Random;
 
 //Student Class
 //This should be pretty obvious what things do
-public class Student {
+public class Student extends User {
 
-    private String name;
-    private String id;
-    private String address;
-    private String phone;
-    private String email;
-    //private profile picture
-    private double tution;
-    //grades
-    //current semester
-    //registered classes
-    //subjects registerd
-    private String academicLvl;
-    private String thesis_title;
-    //progress
+  private static String studentID;
+  private static int IDNum = 20250000;
 
+  private String address;
+  private String phone;
+  private String acdemicLvl;
+  private String semester;
+  private String thesis;
+  private String progress;
 
-    public Student() {
+  private ArrayList<String> courses;
 
+  public Student(String name, String password, String email, String address, String phone, String acdemicLvl, String semester, String thesis, String progress) {
+      super(name, password, email);
+      this.address = address;
+      this.phone = phone;
+      this.acdemicLvl = acdemicLvl;
+      this.semester = semester;
 
-    }
+      studentID = "S" + (IDNum + 1);
 
-    public Student(String name, String address, String phone, String email, String thesis_title, String academicLvl) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.thesis_title = thesis_title;
+      this.thesis = thesis;
 
-        switch(academicLvl) {
-            case "Undergrad":
-                tution = 5000;
-                break;
-            case "Graduate":
-                tution = 7000;
-                break;
-            case "PhD":
-                tution = 10000;
-                break;
-            default:
-                tution = 5000;
-                break;
-        }
-    }
+      if (thesis == null) {
+          progress = "0%";
 
-    public String getName() {
-        return name;
-    }
+      } else {
+          progress = progress + "%";
+      }
+  }
 
-    public String getId() {
-        return id;
-    }
+  public Student() {
+      super("John Doe", "default123", "j_doe@example.edu");
+      address = "123 Main St.";
+      phone = "555-5555";
+      acdemicLvl = "Undergraduate";
+      semester = "Fall 2025";
+      studentID = "S" + (IDNum + 1);
+      thesis = null;
 
-    public String getAddress() {
-        return address;
-    }
+      if (thesis == null) {
+          progress = "0%";
+      }
 
-    public String getPhone() {
-        return phone;
-    }
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  /*
+  Finish everything going on with the courses and that array list
+   */
 
-    public String getThesis_title() {
-        return thesis_title;
-    }
+  public String getAddress() {
+      return address;
+  }
 
-    public String getAcademicLvl() {
-        return academicLvl;
-    }
+  public void setAddress(String address) {
+      this.address = address;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getPhone() {
+      return phone;
+  }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+  public void setPhone(String phone) {
+      this.phone = phone;
+  }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+  public String getAcdemicLvl() {
+      return acdemicLvl;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setAcdemicLvl(String acdemicLvl) {
+      this.acdemicLvl = acdemicLvl;
+  }
 
+  public String getSemester() {
+      return semester;
+  }
 
+  public void setSemester(String semester) {
+      this.semester = semester;
+  }
 
+  public String getThesis() {
+      return thesis;
+  }
 
+  public void setThesis(String thesis) {
+      this.thesis = thesis;
+  }
 
+  public String getProgress() {
+      return progress;
+  }
+
+  public void setProgress(String progress) {
+      this.progress = progress;
+  }
 
 
 

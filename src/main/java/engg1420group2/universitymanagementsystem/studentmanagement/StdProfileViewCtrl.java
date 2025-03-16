@@ -21,57 +21,18 @@ public class StdProfileViewCtrl  {
 
 
 
-   private sharedModel sm = new sharedModel();
-   // private String target;
-
     @FXML
     private ListView<String> courseListView;
-
 
     @FXML
     private Label label_studentName, label_studentid, label_address, label_phone, label_email;
 
     @FXML
-    public void initialize() {
-
-      //  courseListView.getItems().addAll("ENGG 1500", "ENGG 1420", "ENGG 1210", "MATH 1210", "PHYS 1010");
-       // initData(sm, sharedModel.getSelectedName());
-
-        //Reads what cell is selected and sets it as a string
-        String target = sharedModel.getSelectedName();
-
-        //Accesses the student object connected to the key string
-        //Sets all the labels to fill the main information
-        label_studentName.setText(sm.getValueForKey(target).getName());
-        //label_studentid.setText(studentHashMap.get(target).getId());
-        label_address.setText(sm.getValueForKey(target).getAddress());
-       // label_phone.setText(studentHashMap.get(target).getPhone());
-        label_email.setText(sm.getValueForKey(target).getEmail());
+    private Button BtnExit;
 
 
-
-    }
-
-/*
-    public void initData(sharedModel dataStorage, String studentKey) {
-        dataStorage = sm;
-        studentKey = target;
-
-        // Initialize the fields with the current values
-        Student std = dataStorage.getValueForKey(studentKey);
-
-        label_studentName.setText(std.getName());
-        //label_studentid.setText(std.getId());
-        label_address.setText(std.getAddress());
-        // label_phone.setText(std.getPhone());
-        label_email.setText(std.getEmail());
-
-    }
-
- */
-    //Named weird but just the exit button
     @FXML
-    void management(ActionEvent event) throws IOException {
+    void exit(ActionEvent event) throws IOException {
         try {
             // Load the FXML for the Faculty-Profile.fxml file
             FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdDashboard.fxml"));
@@ -95,9 +56,29 @@ public class StdProfileViewCtrl  {
         }
     }
 
+    @FXML
+    void leave (ActionEvent event) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("StdDashboard.fxml"));
+        Stage window = (Stage) BtnExit.getScene().getWindow();
+        window.setScene(new Scene(root, 600, 400));
+    }
+
+    @FXML
+    public void initialize() {
+
+        courseListView.getItems().addAll("ENGG 1500", "ENGG 1420", "ENGG 1210", "MATH 1210", "PHYS 1010");
+
+
+        //Reads what cell is selected and sets it as a string
+        String target = sharedDatabase.getSelectedName();
+
+        //Accesses the student object connected to the key string
+        //Sets all the labels to fill the main information
+        label_studentName.setText(sharedDatabase.getStudent(target).getName());
+        label_address.setText(sharedDatabase.getStudent(target).getAddress());
+        label_email.setText(sharedDatabase.getStudent(target).getEmail());
 
 
 
-
-
+    }
 }

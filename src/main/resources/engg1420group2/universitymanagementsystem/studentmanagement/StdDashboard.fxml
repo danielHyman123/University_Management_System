@@ -15,7 +15,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="button_addStd" layoutX="490.0" layoutY="50.0" mnemonicParsing="false" onAction="#addOrEdit" text="Add/Edit Student" />
+      <Button fx:id="button_addStd" layoutX="490.0" layoutY="50.0" mnemonicParsing="false" onAction="#addOrEdit" text="Add Student" />
       <Button fx:id="button_deleteStd" layoutX="380.0" layoutY="50.0" mnemonicParsing="false" onAction="#buttom_delete" text="Delete Student" />
    </children>
 </Pane>

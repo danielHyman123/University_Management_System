@@ -24,9 +24,8 @@ public class StdProfileEditCtrl  {
     @FXML
     private Label label_ID;
 
-   sharedModel sm = new sharedModel();
     //private sharedModel sm;
-    String target = sharedModel.getSelectedName();
+    String target = sharedDatabase.getSelectedName();
     //private String target;
 
 
@@ -35,10 +34,12 @@ public class StdProfileEditCtrl  {
     void saveChanges(ActionEvent event) throws IOException {
 
         //changing all the data to the values in the text field
-        sm.getValueForKey(target).setName(tfName.getText());
-        sm.getValueForKey(target).setAddress(tfAddress.getText());
-        sm.getValueForKey(target).setPhone(tfPhone.getText());
-        sm.getValueForKey(target).setEmail(tfEmail.getText());
+
+        sharedDatabase.getStudent(target).setName(tfName.getText());
+        sharedDatabase.getStudent(target).setName(tfAddress.getText());
+        sharedDatabase.getStudent(target).setName(tfPhone.getText());
+        sharedDatabase.getStudent(target).setName(tfEmail.getText());
+
 
         //Going back to the student dashboard
         try {
@@ -97,12 +98,10 @@ public class StdProfileEditCtrl  {
     public void initialize() {
 
     //Filling the text fields with whats in the student object
-        tfName.setText(sm.getValueForKey(target).getName());
-        tfAddress.setText(sm.getValueForKey(target).getAddress());
-        tfPhone.setText(sm.getValueForKey(target).getPhone());
-        tfEmail.setText(sm.getValueForKey(target).getEmail());
-
-
+        tfName.setText(sharedDatabase.getStudent(target).getName());
+        tfAddress.setText(sharedDatabase.getStudent(target).getAddress());
+        tfPhone.setText(sharedDatabase.getStudent(target).getPhone());
+        tfEmail.setText(sharedDatabase.getStudent(target).getEmail());
 
 
     }
