@@ -8,75 +8,97 @@ import com.example.engg1420facultymanagement.DatabaseManager;
 
 public class Faculty {
 
-    String facultyId;
-    String facultyName;
-    String degree;
-    String researchInterest;
-    String email;
-    String officeLocation;
-    String courses;
-    String password;
+    private DatabaseManager dbm;
+    private List<String> facultyMember = new ArrayList<>();
 
-    public Faculty(String facultyId, DatabaseManager db) throws SQLException {
-        List<String> facultyMember = db.getRow("Faculties", "Faculty ID", facultyId);
-        this.facultyId = facultyMember.get(0);
-        this.facultyName = facultyMember.get(1);
-        this.degree = facultyMember.get(2);
-        this.researchInterest = facultyMember.get(3);
-        this.email = facultyMember.get(4);
-        this.officeLocation = facultyMember.get(5);
-        this.courses = facultyMember.get(6);
-        this.password = facultyMember.get(7);
+    public Faculty(String facultyId, DatabaseManager dbm) throws SQLException {
+        this.dbm = dbm;
+        this.facultyMember = dbm.getRow("Faculties", "Faculty ID", facultyId);
+        System.out.println("Courses: " + facultyMember.get(6));
+        for(String value : facultyMember) {
+            System.out.println(value);
+        }
     }
 
     public String getFacultyId() {
-        return facultyId;
+        return this.facultyMember.get(0);
+    }
+
+    public String getFacultyName() {
+        return this.facultyMember.get(1);
+    }
+
+    public String getDegree() {
+        return this.facultyMember.get(2);
+    }
+
+    public String getResearchInterest() {
+        return this.facultyMember.get(3);
+    }
+
+    public String getEmail() {
+        return this.facultyMember.get(4);
+    }
+
+    public String getOfficeLocation() {
+        return this.facultyMember.get(5);
+    }
+
+    public String getCourses() {
+        return this.facultyMember.get(6);
+    }
+
+    public String getPassword() {
+        return this.facultyMember.get(7);
     }
 
     public void setFacultyId(String facultyId) {
-        this.facultyId = facultyId;
+        this.facultyMember.set(0, facultyId);
     }
-    public String getFacultyName() {
-        return facultyName;
-    }
+
     public void setFacultyName(String facultyName) {
-        this.facultyName = facultyName;
+        this.facultyMember.set(1, facultyName);
     }
-    public String getDegree() {
-        return degree;
-    }
+
     public void setDegree(String degree) {
-        this.degree = degree;
+        this.facultyMember.set(2, degree);
     }
-    public String getResearchInterest() {
-        return researchInterest;
-    }
+
     public void setResearchInterest(String researchInterest) {
-        this.researchInterest = researchInterest;
+        this.facultyMember.set(3, researchInterest);
     }
-    public String getEmail() {
-        return email;
-    }
+
     public void setEmail(String email) {
-        this.email = email;
+        this.facultyMember.set(4, email);
     }
-    public String getOfficeLocation() {
-        return officeLocation;
-    }
+
     public void setOfficeLocation(String officeLocation) {
-        this.officeLocation = officeLocation;
+        this.facultyMember.set(5, officeLocation);
     }
-    public String getCourses() {
-        return courses;
-    }
+
     public void setCourses(String courses) {
-        this.courses = courses;
+        this.facultyMember.set(6, courses);
     }
-    public String getPassword() {
-        return password;
+
+    public void addCourses(List<String> courses) {
+        String newcourses = "";
+
+        for(int i = 0; i < courses.size(); i++) {
+            newcourses += "," + courses.get(i);
+        }
+        setCourses(newcourses);
     }
+
     public void setPassword(String password) {
-        this.password = password;
+        this.facultyMember.set(7, password);
+    }
+
+    public void updateInfo() {
+        try {
+            this.dbm.updateRowInTable("Faculties", "Faculty ID", this.facultyMember.get(0), this.facultyMember);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

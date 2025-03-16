@@ -11,13 +11,29 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class facultyController {
-    DatabaseManager db;
+    private DatabaseManager db;
+    private String username;
+    private String access;
+    private Faculty faculty;
 
-    public facultyController(DatabaseManager db) {
+    public facultyController(DatabaseManager db, String username) throws SQLException {
         this.db = db;
+        this.username = username;
+
+        if (username.equalsIgnoreCase("admin")) {
+            this.access = "admin";
+        }else if(db.belongsToTable("Faculties", username)){
+            this.access = "faculty";
+        }else if(db.belongsToTable("Students", username)){
+            this.access = "student";
+        }else{
+            this.access = "student";
+        }
     }
 
     @FXML
@@ -31,8 +47,19 @@ public class facultyController {
 
     @FXML
     public void initialize() throws SQLException {
+        List<String> viewableInfo = new ArrayList<>();
+        List<String> facultyManes = db.getColumnValues("Faculties", "Name");
+        List<String> facultyIDs = db.getColumnValues("Faculties", "Faculty ID");
 
-        facultyList.getItems().addAll(db.getColumnValues("Faculties", "Name"));
+        for(int i = 0; i < facultyIDs.size(); i++){
+            viewableInfo.add(facultyIDs.get(i) + ":" + facultyManes.get(i));
+        }
+        for(int i = 0; i < viewableInfo.size(); i++){
+            System.out.println(viewableInfo.get(i));
+        }
+
+
+        facultyList.getItems().addAll(viewableInfo);
 
         facultyList.setCellFactory(lv -> {
             ListCell<String> cell = new ListCell<>();
@@ -40,15 +67,16 @@ public class facultyController {
 
             MenuItem viewProfile = new MenuItem();
             viewProfile.textProperty().bind(Bindings.format("View Profile for \"%s\"", cell.itemProperty()));
-            viewProfile.setOnAction(event -> openViewProfile(cell.getItem(), accessCheck.isSelected()));
+            viewProfile.setOnAction(event -> openViewProfile(cell.getItem()));
 
             MenuItem deleteItem = new MenuItem();
             deleteItem.textProperty().bind(Bindings.format("Delete \"%s\"", cell.itemProperty()));
-            deleteItem.setOnAction(event -> facultyList.getItems().remove(cell.getItem()));
+            deleteItem.setOnAction(event -> deleteFaculty(cell.getItem()));
 
             MenuItem assignCourses = new MenuItem();
             assignCourses.textProperty().bind(Bindings.format("Assign Courses to \"%s\"", cell.itemProperty()));
-            assignCourses.setOnAction(event -> openAssignCourses(cell.getItem()));
+            assignCourses.setOnAction(event -> {assignCourses(cell.getItem());
+            });
 
             contextMenu.getItems().addAll(viewProfile, deleteItem, assignCourses);
             cell.textProperty().bind(cell.itemProperty());
@@ -61,65 +89,95 @@ public class facultyController {
                 }
             });
 
-            // Disable delete and assign courses based on checkbox
-            accessCheck.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-                deleteItem.setDisable(!isSelected);
-                assignCourses.setDisable(!isSelected);
-            });
+
+            if(access.equals("student") || access.equals("faculty")){
+                deleteItem.setDisable(true);
+                assignCourses.setDisable(true);
+            }
 
             return cell;
         });
 
         // Hide button when checkbox is unchecked
-        addFacultyButton.visibleProperty().bind(accessCheck.selectedProperty());
+        if(access.equals("student") || access.equals("faculty")){
+            addFacultyButton.setVisible(false);
+        }
+        //addFacultyButton.visibleProperty().bind(accessCheck.selectedProperty());
+
     }
 
     @FXML
     void addFaculty(ActionEvent event) throws IOException {
-        try {
+        try{
+            Stage currentStage = (Stage) facultyList.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
+
+            addFacultyController addFacultyController = new addFacultyController(previousScene, db);
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("add-faculty.fxml"));
+            fxmlLoader.setController(addFacultyController);
             Parent root = fxmlLoader.load();
-            Stage newStage = new Stage();
-            Scene scene = new Scene(root, 600, 400);
-            newStage.setTitle("Add Faculty");
-            newStage.setScene(scene);
-            newStage.show();
+
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("Add Faculty");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
-    private void openViewProfile(String facultyName, boolean hasAccess) {
+    @FXML
+    void deleteFaculty(String facultyInfo) {
+        facultyList.getItems().remove(facultyInfo);
+        String[] parts = facultyInfo.split(":");
+        System.out.println(parts[0]);
         try {
-            FacultyProfileController profileController = new FacultyProfileController(hasAccess);
+            db.deleteRowFromTable("Faculties", "Faculty ID", parts[0]);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void openViewProfile(String facultyInfo) {
+        try {
+            FacultyProfileController profileController = new FacultyProfileController(facultyInfo, access, db);
+
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-profile.fxml"));
             fxmlLoader.setController(profileController);
             Parent root = fxmlLoader.load();
 
-            Stage newStage = new Stage();
-            newStage.setScene(new Scene(root, 600, 400));
-            newStage.setTitle("Faculty Profile");
-            newStage.show();
+            // Get current stage and store previous scene
+            Stage currentStage = (Stage) facultyList.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
+
+            // Pass the previous scene to the new controller
+            profileController.setPreviousScene(previousScene);
+
+            // Switch to the new scene
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("Faculty Profile");
+
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void openAssignCourses(String facultyName) {
-        openScene("assign-courses.fxml", "Assign Courses to " + facultyName);
+    private void assignCourses(String facultyInfo) {
+        try{
+        String[] parts = facultyInfo.split(":");
+        Stage currentStage = (Stage) facultyList.getScene().getWindow();
+        Scene previousScene = currentStage.getScene(); // Save current scene
+
+        assignCoursesController assignCoursesController = new assignCoursesController(db, previousScene, parts[0]);
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("assign-courses.fxml"));
+        fxmlLoader.setController(assignCoursesController);
+        Parent root = fxmlLoader.load();
+
+        currentStage.setScene(new Scene(root, 600, 400));
+        currentStage.setTitle("Assign Courses");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    private void openScene(String fxmlFile, String title) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(fxmlFile));
-            Parent root = fxmlLoader.load();
-            Stage newStage = new Stage();
-            newStage.setScene(new Scene(root, 600, 400));
-            newStage.setTitle(title);
-            newStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
