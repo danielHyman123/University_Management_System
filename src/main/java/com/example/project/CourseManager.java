@@ -31,4 +31,9 @@ public class CourseManager {
     public static void addCourse(Course course) {
         courses.add(course);
     }
+
+    public static void deleteCourse(Course course) {
+        courses.remove(course);
+    }
+
 }

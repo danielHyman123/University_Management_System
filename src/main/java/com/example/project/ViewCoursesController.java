@@ -3,11 +3,14 @@ package com.example.project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 public class ViewCoursesController {
 
@@ -21,11 +24,17 @@ public class ViewCoursesController {
     @FXML private TableColumn<Course, String> timeColumn;
     @FXML private TableColumn<Course, String> locationColumn;
     @FXML private TableColumn<Course, String> examColumn;
+
+    @FXML private Button editCourseButton;
+    @FXML private Button deleteCourseButton;
+    @FXML private Button manageEnrollmentsButton;
     @FXML private Button goBackButton;
+
+    private ObservableList<Course> courseList;
 
     @FXML
     private void initialize() {
-        // Link columns to Course attributes
+        // Column bindings
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("courseName"));
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("courseCode"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
@@ -36,11 +45,92 @@ public class ViewCoursesController {
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         examColumn.setCellValueFactory(new PropertyValueFactory<>("finalExamDateTime"));
 
-        // Load courses into TableView
-        ObservableList<Course> courseList = FXCollections.observableArrayList(CourseManager.getCourses());
+        // Load courses
+        courseList = FXCollections.observableArrayList(CourseManager.getCourses());
         coursesTable.setItems(courseList);
+
+        // Disable buttons initially
+        editCourseButton.setDisable(true);
+        deleteCourseButton.setDisable(true);
+        manageEnrollmentsButton.setDisable(true);
+
+        // Enable buttons only when a course is selected
+        coursesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            boolean isSelected = newSelection != null;
+            editCourseButton.setDisable(!isSelected);
+            deleteCourseButton.setDisable(!isSelected);
+            manageEnrollmentsButton.setDisable(!isSelected);
+        });
     }
 
+    // Open Edit Course Window
+    @FXML
+    private void openEditCourse() {
+        Course selectedCourse = coursesTable.getSelectionModel().getSelectedItem();
+        if (selectedCourse == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditCourse.fxml"));
+            Parent root = loader.load();
+
+            EditCourseController controller = loader.getController();
+            controller.setCourse(selectedCourse); // Pass course to edit
+
+            Stage editStage = new Stage();
+            editStage.setScene(new Scene(root));
+            editStage.setTitle("Edit Course");
+            editStage.initModality(Modality.APPLICATION_MODAL);
+            editStage.showAndWait();
+
+            // Refresh table after editing
+            coursesTable.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Delete Course
+    @FXML
+    private void deleteCourse() {
+        Course selectedCourse = coursesTable.getSelectionModel().getSelectedItem();
+        if (selectedCourse == null) return;
+
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to delete this course?", ButtonType.YES, ButtonType.NO);
+        confirmation.setTitle("Confirm Deletion");
+        confirmation.setHeaderText(null);
+
+        if (confirmation.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+            CourseManager.deleteCourse(selectedCourse);
+            courseList.remove(selectedCourse);
+            coursesTable.refresh();
+        }
+    }
+
+    // Open Manage Enrollments Window
+    @FXML
+    private void openManageEnrollments() {
+        Course selectedCourse = coursesTable.getSelectionModel().getSelectedItem();
+        if (selectedCourse == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageEnrollments.fxml"));
+            Parent root = loader.load();
+
+            ManageEnrollmentsController controller = loader.getController();
+            controller.setCourse(selectedCourse); // Pass course to display enrolled students
+
+            Stage enrollmentsStage = new Stage();
+            enrollmentsStage.setScene(new Scene(root));
+            enrollmentsStage.setTitle("Manage Enrollments");
+            enrollmentsStage.initModality(Modality.APPLICATION_MODAL);
+            enrollmentsStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Close the window
     @FXML
     private void goBack() {
         Stage stage = (Stage) goBackButton.getScene().getWindow();

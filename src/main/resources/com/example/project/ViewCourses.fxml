@@ -20,6 +20,13 @@
             </columns>
         </TableView>
 
+        <HBox spacing="10">
+            <Button fx:id="editCourseButton" text="Edit Course" onAction="#openEditCourse" disable="true"/>
+            <Button fx:id="deleteCourseButton" text="Delete Course" onAction="#deleteCourse" disable="true"/>
+            <Button fx:id="manageEnrollmentsButton" text="Manage Enrollments" onAction="#openManageEnrollments" disable="true"/>
+
+        </HBox>
+
         <Button fx:id="goBackButton" text="Go Back" onAction="#goBack"/>
     </VBox>
 </AnchorPane>

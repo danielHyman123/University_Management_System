@@ -34,18 +34,8 @@ public class AdminViewController {
     }
 
     @FXML
-    private void deleteCourse() {
-        openWindow("DeleteCourse.fxml", "Delete Course");
-    }
-
-    @FXML
     private void assignFaculty() {
         openWindow("AssignFaculty.fxml", "Assign Faculty");
-    }
-
-    @FXML
-    private void manageEnrollments() {
-        openWindow("ManageEnrollments.fxml", "Manage Enrollments");
     }
 
     private void openWindow(String fxmlFile, String title) {

@@ -1,4 +1,5 @@
 package com.example.project;
+
 public class Course {
     private String courseName;
     private int courseCode;
@@ -22,48 +23,30 @@ public class Course {
         this.finalExamDateTime = finalExamDateTime;
     }
 
-    public String getCourseName() {
-        return courseName;
-    }
+    // Getters
+    public String getCourseName() { return courseName; }
+    public int getCourseCode() { return courseCode; }
+    public String getSubjectName() { return subjectName; }
+    public int getSectionNumber() { return sectionNumber; }
+    public String getTeacherName() { return teacherName; }
+    public int getCapacity() { return capacity; }
+    public String getLectureTime() { return lectureTime; }
+    public String getLocation() { return location; }
+    public String getFinalExamDateTime() { return finalExamDateTime; }
 
-    public int getCourseCode() {
-        return courseCode;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public int getSectionNumber() {
-        return sectionNumber;
-    }
-
-    public String getTeacherName() {
-        return teacherName;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public String getLectureTime() {
-        return lectureTime;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getFinalExamDateTime() {
-        return finalExamDateTime;
-    }
-
+    // **SETTERS (NEWLY ADDED)**
+    public void setCourseName(String courseName) { this.courseName = courseName; }
+    public void setCourseCode(int courseCode) { this.courseCode = courseCode; }
+    public void setSubjectName(String subjectName) { this.subjectName = subjectName; }
+    public void setSectionNumber(int sectionNumber) { this.sectionNumber = sectionNumber; }
+    public void setTeacherName(String teacherName) { this.teacherName = teacherName; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
+    public void setLectureTime(String lectureTime) { this.lectureTime = lectureTime; }
+    public void setLocation(String location) { this.location = location; }
+    public void setFinalExamDateTime(String finalExamDateTime) { this.finalExamDateTime = finalExamDateTime; }
 
     @Override
-    public String toString(){
+    public String toString() {
         return subjectName + courseCode;
     }
-
 }
-
-
