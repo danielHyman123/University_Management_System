@@ -19,10 +19,13 @@ import java.util.HashMap;
 public class StdProfileEditCtrl  {
 
     @FXML
-    private TextField tfName, tfAddress, tfPhone, tfEmail;
+    private TextField tfName, tfAddress, tfPhone, tfEmail, tfPassword, tfThesis;
 
     @FXML
-    private Label label_ID;
+    private Label labelStdID;
+
+    @FXML
+    private Button btnSave, btnExit, btnUpload;
 
 
     String target = sharedDatabase.getSelectedName();
