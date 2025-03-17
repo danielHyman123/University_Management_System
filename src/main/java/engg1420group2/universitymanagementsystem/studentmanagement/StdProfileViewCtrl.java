@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.*;
 import javafx.stage.*;
 
+import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -23,9 +24,18 @@ public class StdProfileViewCtrl  {
 
     @FXML
     private ListView<String> courseListView;
+    private ListView<String> subjectListView;
 
     @FXML
-    private Label label_studentName, label_studentid, label_address, label_phone, label_email;
+    private Label labelStdName, labelStdID, labelStdEmail, labelStdPhone, labelStdAddress, labelSemester, labelAcmLvl, labelThesis;
+    private Label labelTotalAmt, labelAmtPaid, labelAmtLeft;
+
+    @FXML
+    private ProgressBar barProgramProgress;
+
+    @FXML
+    private ImageView imageProfile;
+
 
     @FXML
     private Button BtnExit;
@@ -67,6 +77,7 @@ public class StdProfileViewCtrl  {
     public void initialize() {
 
         courseListView.getItems().addAll("ENGG 1500", "ENGG 1420", "ENGG 1210", "MATH 1210", "PHYS 1010");
+        subjectListView.getItems().addAll("Engineering", "Math", "Physics", "Programming", "Chemistry");
 
 
         //Reads what cell is selected and sets it as a string
@@ -74,9 +85,18 @@ public class StdProfileViewCtrl  {
 
         //Accesses the student object connected to the key string
         //Sets all the labels to fill the main information
-        label_studentName.setText(sharedDatabase.getStudent(target).getName());
-        label_address.setText(sharedDatabase.getStudent(target).getAddress());
-        label_email.setText(sharedDatabase.getStudent(target).getEmail());
+
+        labelStdName.setText(sharedDatabase.getStudent(target).getName());
+        labelStdID.setText(sharedDatabase.getStudent(target).getStudentID());
+        labelStdEmail.setText(sharedDatabase.getStudent(target).getEmail());
+        labelStdPhone.setText(sharedDatabase.getStudent(target).getPhone());
+        labelStdAddress.setText(sharedDatabase.getStudent(target).getAddress());
+        labelSemester.setText(sharedDatabase.getStudent(target).getSemester());
+        labelAcmLvl.setText(sharedDatabase.getStudent(target).getAcdemicLvl());
+        labelThesis.setText(sharedDatabase.getStudent(target).getThesis());
+
+
+
 
 
 

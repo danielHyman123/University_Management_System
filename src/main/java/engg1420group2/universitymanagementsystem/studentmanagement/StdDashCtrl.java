@@ -25,7 +25,7 @@ public class StdDashCtrl {
     private Label title_studentList;
 
     @FXML
-    private ListView<String> studentList;
+    private ListView<String> listViewStudent;
     @FXML
     private Button button_testSwitchScene, button_addStd, button_deleteStd;
 
@@ -65,7 +65,7 @@ public class StdDashCtrl {
 
     //Edit Button Script
     @FXML
-    void addOrEdit(ActionEvent event) throws IOException {
+    void Add(ActionEvent event) throws IOException {
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileEditing.fxml"));
@@ -93,7 +93,7 @@ public class StdDashCtrl {
     //Delete Button Script
     @FXML
     void buttom_delete(ActionEvent event) throws IOException {
-        studentList.getItems().remove(studentList.getSelectionModel().getSelectedIndex());
+        listViewStudent.getItems().remove(listViewStudent.getSelectionModel().getSelectedIndex());
 
     }
 
@@ -101,20 +101,18 @@ public class StdDashCtrl {
 
     @FXML
     public void initialize() {
-        Student std = new Student("New Student", "default123", "kegan@example.edu", "123 Main St", "555-5555", "Undergraduate", "Fall 2025", "Research", "50%");
-        sharedDatabase.addStudent("Student", std);
-        //sharedDatabase db = new sharedDatabase();
 
+        //sharedDatabase db = new sharedDatabase();
         //Populates the sample student list
         for(int i = 0; i < sharedDatabase.stdNameList.size(); i++){
-            studentList.getItems().add(sharedDatabase.stdNameList.get(i));
+            listViewStudent.getItems().add(sharedDatabase.stdNameList.get(i));
         }
 
-        title_studentList.setText("Student Management Update");
+
 
         // Code of detecting what the user is selecting on the list
         // Add listener to ListView selection
-        studentList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        listViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             sharedDatabase.setSelectedName(newValue);  // Save the selected name to SharedModel
         });
 
@@ -122,7 +120,7 @@ public class StdDashCtrl {
 
 
         //Creates the right click menu
-        studentList.setCellFactory(lv -> {
+        listViewStudent.setCellFactory(lv -> {
 
             ListCell<String> cell = new ListCell<>();
 
@@ -187,7 +185,7 @@ public class StdDashCtrl {
             //Creates the delete option for the right click menu
             MenuItem deleteItem = new MenuItem();
             deleteItem.textProperty().bind(Bindings.format("Delete \"%s\"", cell.itemProperty()));
-            deleteItem.setOnAction(event -> studentList.getItems().remove(cell.getItem()));
+            deleteItem.setOnAction(event -> listViewStudent.getItems().remove(cell.getItem()));
 
             //Adding all the options to the click down menu
             contextMenu.getItems().addAll(viewProfile, deleteItem, addProfile);
@@ -203,6 +201,8 @@ public class StdDashCtrl {
             });
             return cell;
             });
+
+
 
     }
 }

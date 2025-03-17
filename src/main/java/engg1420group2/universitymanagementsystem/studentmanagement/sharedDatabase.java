@@ -30,6 +30,7 @@ public class sharedDatabase {
         add(ant);
         add(ach);
     }};
+
     public static ArrayList<String> stdNameList = new ArrayList<>() {{
         add("Kyle Egan");
         add("Daniel Hyman");
@@ -37,9 +38,7 @@ public class sharedDatabase {
         add("Anthony John");
         add("Achebe LastName");
     }};
-
-
-
+    
 
     public sharedDatabase() {
         for (int i = 0; i < studentArrayList.size(); i++) {
