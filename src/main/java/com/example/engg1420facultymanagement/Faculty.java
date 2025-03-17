@@ -6,94 +6,87 @@ import java.util.List;
 
 import com.example.engg1420facultymanagement.DatabaseManager;
 
-public class Faculty {
+public class Faculty extends User {
 
     private DatabaseManager dbm;
     private List<String> facultyMember = new ArrayList<>();
+    private String facultyID;
+    private String degree;
+    private String researchInterest;
+    private String officeLocation;
+    private String coursesOffered;
 
     public Faculty(String facultyId, DatabaseManager dbm) throws SQLException {
         this.dbm = dbm;
         this.facultyMember = dbm.getRow("Faculties", "Faculty ID", facultyId);
-        System.out.println("Courses: " + facultyMember.get(6));
-        for(String value : facultyMember) {
-            System.out.println(value);
-        }
+        this.facultyID = facultyMember.get(0);
+        super.name = facultyMember.get(1);
+        this.degree = facultyMember.get(2);
+        this.researchInterest = facultyMember.get(3);
+        super.email = facultyMember.get(4);
+        this.officeLocation = facultyMember.get(5);
+        this.coursesOffered = facultyMember.get(6);
+        super.password = facultyMember.get(7);
     }
 
     public String getFacultyId() {
-        return this.facultyMember.get(0);
-    }
-
-    public String getFacultyName() {
-        return this.facultyMember.get(1);
+        return this.facultyID;
     }
 
     public String getDegree() {
-        return this.facultyMember.get(2);
+        return this.degree;
     }
 
     public String getResearchInterest() {
-        return this.facultyMember.get(3);
-    }
-
-    public String getEmail() {
-        return this.facultyMember.get(4);
+        return this.researchInterest;
     }
 
     public String getOfficeLocation() {
-        return this.facultyMember.get(5);
+        return this.officeLocation;
     }
 
     public String getCourses() {
-        return this.facultyMember.get(6);
-    }
-
-    public String getPassword() {
-        return this.facultyMember.get(7);
+        return this.coursesOffered;
     }
 
     public void setFacultyId(String facultyId) {
-        this.facultyMember.set(0, facultyId);
-    }
-
-    public void setFacultyName(String facultyName) {
-        this.facultyMember.set(1, facultyName);
+        this.facultyID = facultyId;
     }
 
     public void setDegree(String degree) {
-        this.facultyMember.set(2, degree);
+        this.degree = degree;
     }
 
     public void setResearchInterest(String researchInterest) {
-        this.facultyMember.set(3, researchInterest);
-    }
-
-    public void setEmail(String email) {
-        this.facultyMember.set(4, email);
+        this.researchInterest = researchInterest;
     }
 
     public void setOfficeLocation(String officeLocation) {
-        this.facultyMember.set(5, officeLocation);
+        this.officeLocation = officeLocation;
     }
 
-    public void setCourses(String courses) {
-        this.facultyMember.set(6, courses);
+    private void setCourses(String courses) {
+        this.coursesOffered = courses;
     }
 
     public void addCourses(List<String> courses) {
         String newcourses = "";
 
         for(int i = 0; i < courses.size(); i++) {
-            newcourses += "," + courses.get(i);
+            newcourses += courses.get(i) + ",";
         }
         setCourses(newcourses);
     }
 
-    public void setPassword(String password) {
-        this.facultyMember.set(7, password);
-    }
-
     public void updateInfo() {
+        this.facultyMember.set(0, this.facultyID);
+        this.facultyMember.set(1, super.name);
+        this.facultyMember.set(2, this.degree);
+        this.facultyMember.set(3, this.researchInterest);
+        this.facultyMember.set(4, super.email);
+        this.facultyMember.set(5, this.officeLocation);
+        this.facultyMember.set(6, this.coursesOffered);
+        this.facultyMember.set(7, super.password);
         try {
             this.dbm.updateRowInTable("Faculties", "Faculty ID", this.facultyMember.get(0), this.facultyMember);
         } catch (SQLException e) {
