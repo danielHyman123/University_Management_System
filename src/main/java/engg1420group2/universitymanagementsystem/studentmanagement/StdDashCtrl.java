@@ -25,6 +25,7 @@ public class StdDashCtrl {
     private String access;
     private Student student;
 
+    //Controller Constructor
     public StdDashCtrl(DatabaseManager db, String username) throws SQLException {
         this.db = db;
         this.username = username;
@@ -41,26 +42,52 @@ public class StdDashCtrl {
     }
 
     @FXML
-    private Label title_studentList;
-
-    @FXML
     private ListView<String> listViewStudent;
     @FXML
     private Button btnView, btnAddStd, btnDelStd;
 
-    //Delete Button Script
+    //Buttons:
     @FXML
-    void delete(ActionEvent event) throws IOException {
-        listViewStudent.getItems().remove(listViewStudent.getSelectionModel().getSelectedIndex());
+    void deleteStd(ActionEvent event) throws IOException {
+        listViewStudent.getItems().remove(sharedDatabase.getSelectedName());
+        String[] parts = sharedDatabase.getSelectedName().split(":");
+        System.out.println(parts[0]);
+        try {
+            db.deleteRowFromTable("UMS_Data_Students", "Student ID", parts[0]);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
-    void view(ActionEvent event) throws IOException {
-        viewStudent(sharedDatabase.getSelectedName());
+    void viewStd(ActionEvent event) throws IOException {
+        try {
+            StdProfileViewCtrl profileController = new StdProfileViewCtrl(sharedDatabase.getSelectedName(), access, db);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
+            fxmlLoader.setController(profileController);
+            Parent root = fxmlLoader.load();
+
+            // Get current stage and store previous scene
+            Stage currentStage = (Stage) btnView.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
+
+
+            // profileController.setPreviousScene(previousScene);
+
+            // Switch to the new scene
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("Student Profile");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
-    void addPage(ActionEvent event) throws IOException {
+    void addStd(ActionEvent event) throws IOException {
         try{
             Stage currentStage = (Stage) btnAddStd.getScene().getWindow();
             Scene previousScene = currentStage.getScene(); // Save current scene
@@ -79,40 +106,9 @@ public class StdDashCtrl {
 
 
 
-
-    void viewStudent(String studentInfo) {
-        try {
-            StdProfileViewCtrl profileController = new StdProfileViewCtrl(studentInfo, access, db);
-
-            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
-            fxmlLoader.setController(profileController);
-            Parent root = fxmlLoader.load();
-
-            // Get current stage and store previous scene
-            Stage currentStage = (Stage) btnView.getScene().getWindow();
-            Scene previousScene = currentStage.getScene(); // Save current scene
-
-
-           // profileController.setPreviousScene(previousScene);
-
-            // Switch to the new scene
-            currentStage.setScene(new Scene(root, 600, 400));
-            currentStage.setTitle("Student Profile");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        //SQL Exception Catch needs to go here
-    }
-
-
-
-
-
     @FXML
     public void initialize() throws SQLException {
+        //Populating the List view with the student names and student IDs
         List<String> viewableInfo = new ArrayList<>();
         List<String> StudentNames = db.getColumnValues("UMS_Data_Students", "Name");
         List<String> StudentIDs = db.getColumnValues("UMS_Data_Students", "Student ID");
@@ -123,10 +119,9 @@ public class StdDashCtrl {
         for(int i = 0; i < viewableInfo.size(); i++){
             System.out.println(viewableInfo.get(i));
         }
-
         listViewStudent.getItems().addAll(viewableInfo);
 
-
+        //Creating a listener that tracks which list cell is selected
         listViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             sharedDatabase.setSelectedName(newValue);  // Save the selected name to SharedModel
         });
@@ -145,7 +140,24 @@ public class StdDashCtrl {
             viewProfile.textProperty().bind(Bindings.format("View Profile for \"%s\"", cell.itemProperty()));
             viewProfile.setOnAction(event -> {
                 String item = cell.getItem();
-                viewStudent(item);
+                try {
+                    StdProfileViewCtrl profileController = new StdProfileViewCtrl(item, access, db);
+
+                    FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
+                    fxmlLoader.setController(profileController);
+                    Parent root = fxmlLoader.load();
+
+                    Stage currentStage = (Stage) listViewStudent.getScene().getWindow();
+                    Scene previousScene = currentStage.getScene(); // Save current scene
+
+                    currentStage.setScene(new Scene(root, 600, 400));
+                    currentStage.setTitle("Student Profile");
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
             //Creating the edit profile option for the right-click menu
@@ -155,7 +167,7 @@ public class StdDashCtrl {
                 String item = cell.getItem();
 
                 try{
-                    Stage currentStage = (Stage) btnAddStd.getScene().getWindow();
+                    Stage currentStage = (Stage) listViewStudent.getScene().getWindow();
                     Scene previousScene = currentStage.getScene(); // Save current scene
 
                     StdProfileEditCtrl stdProfileEditCtrl = new StdProfileEditCtrl(db, item);
@@ -173,7 +185,17 @@ public class StdDashCtrl {
             //Creates the delete option for the right click menu
             MenuItem deleteItem = new MenuItem();
             deleteItem.textProperty().bind(Bindings.format("Delete \"%s\"", cell.itemProperty()));
-            deleteItem.setOnAction(event -> listViewStudent.getItems().remove(cell.getItem()));
+            deleteItem.setOnAction(event -> {
+                String item = cell.getItem();
+                listViewStudent.getItems().remove(item);
+                String[] parts = item.split(":");
+                System.out.println(parts[0]);
+                try {
+                    db.deleteRowFromTable("UMS_Data_Students", "Student ID", parts[0]);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
             //Adding all the options to the click down menu
             contextMenu.getItems().addAll(viewProfile, deleteItem, editProfile);

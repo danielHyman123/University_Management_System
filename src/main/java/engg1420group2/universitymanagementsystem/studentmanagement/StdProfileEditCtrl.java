@@ -18,8 +18,10 @@ import java.util.HashMap;
 
 public class StdProfileEditCtrl  {
 
-    DatabaseManager db;
-    String studentInfo;
+    private DatabaseManager db;
+    private String studentInfo;
+    private Scene previousScene;
+
 
     public StdProfileEditCtrl(DatabaseManager db, String studentInfo) {
         this.db = db;
@@ -70,8 +72,7 @@ public class StdProfileEditCtrl  {
         }
     }
 
-    //Exit Button
-    //Goes back to the student dashboard without changing anything
+
     @FXML
     void exit(ActionEvent event) throws IOException {
         try {

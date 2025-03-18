@@ -8,13 +8,13 @@
 
    <children>
       <ListView fx:id="listViewStudent" layoutY="80.0" prefHeight="320.0" prefWidth="600.0" />
-      <Button fx:id="button_testSwitchScene" layoutX="205.0" layoutY="50.0" mnemonicParsing="false" onAction="#viewStudent" text="View Profile" />
+      <Button fx:id="viewStd" layoutX="5.0" layoutY="50.0" mnemonicParsing="false" onAction="#viewStudent" text="View Profile" />
       <Label layoutX="5.0" layoutY="2.0" text="Student Management System">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="button_addStd" layoutX="5.0" layoutY="50.0" mnemonicParsing="false" onAction="#add" text="Add Student" />
-      <Button fx:id="button_deleteStd" layoutX="100.0" layoutY="50.0" mnemonicParsing="false" onAction="#delete" text="Delete Student" />
+      <Button fx:id="addStd" layoutX="205.0" layoutY="50.0" mnemonicParsing="false" onAction="#add" text="Add Student" />
+      <Button fx:id="deleteStd" layoutX="100.0" layoutY="50.0" mnemonicParsing="false" onAction="#delete" text="Delete Student" />
    </children>
 </Pane>
