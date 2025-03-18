@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
             fxmlLoader.setController(new facultyController(db, username));
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            stage.setTitle("Hello!");
+            stage.setTitle("Faculty Overview!");
             stage.setScene(scene);
             stage.show();
         }else{
@@ -44,7 +44,7 @@ public class HelloApplication extends Application {
 
             }
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            stage.setTitle("Hello!");
+            stage.setTitle("Faculty Profile");
             stage.setScene(scene);
             stage.show();
         }

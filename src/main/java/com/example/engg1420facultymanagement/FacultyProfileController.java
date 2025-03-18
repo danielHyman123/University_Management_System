@@ -87,12 +87,16 @@ public class FacultyProfileController {
         coursesTab.setClosable(false);
         coursesTab.setDisable(!editable);
 
-        System.out.println("Photo Location: " + faculty.getProfilePhotoLocation());
+        //System.out.println("Photo Location: " + faculty.getProfilePhotoLocation());
 
-        System.out.println("Profile Photo Location: " + HelloApplication.class.getResource("images/" + faculty.getProfilePhotoLocation()));
+        //System.out.println("Profile Photo Location: " + HelloApplication.class.getResource("images/" + faculty.getProfilePhotoLocation()));
 
-        Image profile = new Image(HelloApplication.class.getResourceAsStream("images/" + faculty.getProfilePhotoLocation()));
-
+        Image profile = null;
+        try {
+            profile = new Image(HelloApplication.class.getResourceAsStream("images/" + faculty.getProfilePhotoLocation()));
+        }catch (Exception e){
+            profileImage.setImage(new Image(HelloApplication.class.getResourceAsStream("images/profile.jpg")));
+        }
         /*try{
 
 
