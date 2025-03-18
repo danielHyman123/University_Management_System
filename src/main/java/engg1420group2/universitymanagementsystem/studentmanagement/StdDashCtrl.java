@@ -12,20 +12,33 @@ import javafx.scene.*;
 import javafx.stage.*;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.util.*;
 import java.net.URL;
 import java.sql.*;
-import java.util.HashMap;
-
 
 
 public class StdDashCtrl {
-    DatabaseManager db;
 
-   public StdDashCtrl(DatabaseManager db) {
-       this.db = db;
-   }
+    private DatabaseManager db;
+    private String username;
+    private String access;
+    private Student student;
+
+    public StdDashCtrl(DatabaseManager db, String username) throws SQLException {
+        this.db = db;
+        this.username = username;
+
+        if (username.equalsIgnoreCase("admin")) {
+            this.access = "admin";
+        }else if(db.belongsToTable("Faculties", username)){
+            this.access = "faculty";
+        }else if(db.belongsToTable("Students", username)){
+            this.access = "student";
+        }else{
+            this.access = "student";
+        }
+    }
 
     @FXML
     private Label title_studentList;
@@ -33,91 +46,68 @@ public class StdDashCtrl {
     @FXML
     private ListView<String> listViewStudent;
     @FXML
-    private Button button_testSwitchScene, button_addStd, button_deleteStd;
-
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
-    //public static sharedDatabase db = new sharedDatabase();
-
+    private Button btnView, btnAddStd, btnDelStd;
 
     //View Student Button Script
     @FXML
-    void viewStudent(ActionEvent event) throws IOException {
+    void viewStudent(ActionEvent event, String studentInfo) {
         try {
+            StdProfileViewCtrl profileController = new StdProfileViewCtrl(studentInfo, access, db);
 
-            Stage currentStage = (Stage) button_testSwitchScene.getScene().getWindow();
-            Scene currentScene = currentStage.getScene();
-
-            StdProfileViewCtrl stdProfileViewCtrl = new StdProfileViewCtrl(db);
             FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
-            fxmlLoader.setController(stdProfileViewCtrl);
-
+            fxmlLoader.setController(profileController);
             Parent root = fxmlLoader.load();
 
-            currentStage.setScene(new Scene(root, 600, 400));
-            currentStage.setTitle("View Student Profile");
+            // Get current stage and store previous scene
+            Stage currentStage = (Stage) btnView.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
 
+
+           // profileController.setPreviousScene(previousScene);
+
+            // Switch to the new scene
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("Student Profile");
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        //SQL Exception Catch needs to go here
     }
 
     //Edit Button Script
     @FXML
     void add(ActionEvent event) throws IOException {
-        try {
 
-            Stage currentStage = (Stage) button_addStd.getScene().getWindow();
-            Scene currentScene = currentStage.getScene();
-
-            StdCreateCtrl stdCreateCtrl = new StdCreateCtrl(db);
-            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileAdd.fxml"));
-            fxmlLoader.setController(stdCreateCtrl);
-
-            Parent root = fxmlLoader.load();
-
-            currentStage.setScene(new Scene(root, 600, 400));
-            currentStage.setTitle("Add Student");
-
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     //Delete Button Script
     @FXML
     void delete(ActionEvent event) throws IOException {
         listViewStudent.getItems().remove(listViewStudent.getSelectionModel().getSelectedIndex());
-
     }
 
-
-
-
-
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
+        List<String> viewableInfo = new ArrayList<>();
+        List<String> StudentNames = db.getColumnValues("UMS_Data_Students", "Name");
+        List<String> StudentIDs = db.getColumnValues("UMS_Data_Students", "Student ID");
 
-
-        //Populates the sample student list
-
-        for(int i = 0; i < sharedDatabase.stdNameList.size(); i++){
-            listViewStudent.getItems().add(sharedDatabase.stdNameList.get(i));
+        for(int i = 0; i < StudentIDs.size(); i++){
+            viewableInfo.add(StudentIDs.get(i) + ":" + StudentNames.get(i));
+        }
+        for(int i = 0; i < viewableInfo.size(); i++){
+            System.out.println(viewableInfo.get(i));
         }
 
+        listViewStudent.getItems().addAll(viewableInfo);
 
-
-        // Code of detecting what the user is selecting on the list
-        // Add listener to ListView selection
+        /*
         listViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             sharedDatabase.setSelectedName(newValue);  // Save the selected name to SharedModel
         });
 
+         */
 
         //Creates the right click menu
         listViewStudent.setCellFactory(lv -> {
@@ -155,9 +145,9 @@ public class StdDashCtrl {
             });
 
             //Creating the edit profile option for the right-click menu
-            MenuItem addProfile = new MenuItem();
-            addProfile.textProperty().bind(Bindings.format("Edit Profile for \"%s\"", cell.itemProperty()));
-            addProfile.setOnAction(event -> {
+            MenuItem editProfile = new MenuItem();
+            editProfile.textProperty().bind(Bindings.format("Edit Profile for \"%s\"", cell.itemProperty()));
+            editProfile.setOnAction(event -> {
                 String item = cell.getItem();
 
                 //Loading the editing page
@@ -188,7 +178,7 @@ public class StdDashCtrl {
             deleteItem.setOnAction(event -> listViewStudent.getItems().remove(cell.getItem()));
 
             //Adding all the options to the click down menu
-            contextMenu.getItems().addAll(viewProfile, deleteItem, addProfile);
+            contextMenu.getItems().addAll(viewProfile, deleteItem, editProfile);
 
             cell.textProperty().bind(cell.itemProperty());
 
@@ -199,14 +189,14 @@ public class StdDashCtrl {
                     cell.setContextMenu(contextMenu);
                 }
             });
+
+            if(access.equals("student") || access.equals("faculty")){
+                deleteItem.setDisable(true);
+                editProfile.setDisable(true);
+            }
+
             return cell;
             });
-
-
-
-
-
-
 
     }
 }

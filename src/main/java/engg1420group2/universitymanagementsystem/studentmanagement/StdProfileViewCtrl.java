@@ -21,10 +21,15 @@ import java.util.HashMap;
 public class StdProfileViewCtrl  {
 
     DatabaseManager db;
+    String studentID;
+    String access;
 
-    public StdProfileViewCtrl(DatabaseManager db) {
+    public StdProfileViewCtrl(String studentID, String access, DatabaseManager db) {
         this.db = db;
+        this.studentID = studentID;
+        this.access = access;
     }
+
     @FXML
     private ListView<String> courseListView;
 
@@ -48,60 +53,13 @@ public class StdProfileViewCtrl  {
 
 
     @FXML
-    void exit(ActionEvent event) throws IOException {
-        try {
-            // Load the FXML for the Faculty-Profile.fxml file
-            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdDashboard.fxml"));
+    void exit (ActionEvent event) throws IOException {
 
-            // Load the scene from the FXML file
-            Parent root = fxmlLoader.load();
-
-            // Create a new stage (window)
-            Stage newStage = new Stage();
-
-            // Create a new scene and set it for the new stage
-            Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
-            newStage.setTitle("Student Information");
-
-            // Set the scene to the new stage and show it
-            newStage.setScene(scene);
-            newStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void leave (ActionEvent event) throws IOException {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("StdDashboard.fxml"));
-            Stage window = (Stage) BtnExit.getScene().getWindow();
-            window.setScene(new Scene(root, 600, 400));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
     public void initialize() {
 
-        courseListView.getItems().addAll("ENGG 1500", "ENGG 1420", "ENGG 1210", "MATH 1210", "PHYS 1010");
-        subjectListView.getItems().addAll("Engineering", "Math", "Physics", "Programming", "Chemistry");
 
-
-        //Reads what cell is selected and sets it as a string
-        String target = sharedDatabase.getSelectedName();
-
-        //Accesses the student object connected to the key string
-        //Sets all the labels to fill the main information
-        labelStdName.setText(sharedDatabase.getStudent(target).getName());
-        labelStdID.setText(sharedDatabase.getStudent(target).getStudentID());
-        labelStdEmail.setText(sharedDatabase.getStudent(target).getEmail());
-        labelStdPhone.setText(sharedDatabase.getStudent(target).getPhone());
-        labelStdAddress.setText(sharedDatabase.getStudent(target).getAddress());
-        labelSemester.setText(sharedDatabase.getStudent(target).getSemester());
-        labelAcmLvl.setText(sharedDatabase.getStudent(target).getAcdemicLvl());
-        labelThesis.setText(sharedDatabase.getStudent(target).getThesis());
     }
 }

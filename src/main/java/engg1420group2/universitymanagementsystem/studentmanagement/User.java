@@ -6,9 +6,7 @@ public class User {
     protected String password;
     protected String email;
 
-    User() {
-
-    }
+    User() {}
 
     User(String name, String password, String email) {
         this.name = name;

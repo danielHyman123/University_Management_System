@@ -34,12 +34,6 @@ public class StdProfileEditCtrl  {
     private Button btnSave, btnExit, btnUpload;
 
 
-    String target = sharedDatabase.getSelectedName();
-
-
-
-
-
     //Save changes button
     @FXML
     void saveChanges(ActionEvent event) throws IOException {
@@ -100,18 +94,8 @@ public class StdProfileEditCtrl  {
         }
     }
 
+    @FXML
     public void initialize() {
-
-    //Filling the text fields with whats in the student object
-        tfName.setText(sharedDatabase.getStudent(target).getName());
-        tfAddress.setText(sharedDatabase.getStudent(target).getAddress());
-        tfPhone.setText(sharedDatabase.getStudent(target).getPhone());
-        tfEmail.setText(sharedDatabase.getStudent(target).getEmail());
-        tfPassword.setText(sharedDatabase.getStudent(target).getPassword());
-        tfThesis.setText(sharedDatabase.getStudent(target).getThesis());
-
-        labelStdID.setText(sharedDatabase.getStudent(target).getStudentID());
-
 
     }
 
