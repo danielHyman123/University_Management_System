@@ -1,6 +1,5 @@
 package engg1420_project.universitymanagementsystem;
 
-import engg1420_project.universitymanagementsystem.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;

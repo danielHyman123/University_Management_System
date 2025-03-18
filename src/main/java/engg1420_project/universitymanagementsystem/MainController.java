@@ -11,7 +11,7 @@ public class MainController {
 
     @FXML
     private void onHelloButtonClick() {
-        // Implement logic for Dashboard button click here
+        // Add function in a bit
     }
 
     @FXML
@@ -22,11 +22,11 @@ public class MainController {
         Stage stage = new Stage();
         stage.setTitle("Event Management");
 
-        // Load the EventManagement.fxml file
+        // Loads the EventManagement.fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManagement.fxml"));
         AnchorPane root = loader.load();  // Load the FXML into the root layout
 
-        // Create a scene with the loaded root layout
+        // Creates a scene with the loaded root layout
         Scene scene = new Scene(root, 800, 600);
 
         // Set the scene and show the new window

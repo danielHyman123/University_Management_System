@@ -13,7 +13,12 @@ public class Event {
     private double cost;  // 0 if free, otherwise the cost of the event
     private List<String> registeredStudents;
 
-    public Event(String eventName, String eventCode, String description, String headerImage, String location, String dateTime, int capacity, double cost) {
+    public Event() {
+    }
+
+    public Event(String eventName, String eventCode,
+                 String description, String headerImage,
+                 String location, String dateTime, int capacity, double cost) {
         this.eventName = eventName;
         this.eventCode = eventCode;
         this.description = description;

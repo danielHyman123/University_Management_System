@@ -47,15 +47,23 @@
             <Label text="Upcoming Events" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
             <HBox spacing="10.0">
                 <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 10; -fx-border-radius: 5; -fx-border-color: lightgray;">
-                    <Label text="Event 1" style="-fx-font-weight: bold;"/>
-                    <Label text="Date: March 20, 2025"/>
-                    <Label text="Location: Room 101"/>
+                    <Label text="EV001" style="-fx-font-weight: bold;"/>
+                    <Label text="Event Name:Welcome Seminar"/>
+                    <Label text="Description: Room 101"/>
+                    <Label text="Location: Auditorium"/>
+                    <Label text="Date and Time: 9/1/2025 10:00"/>
+                    <Label text="Capacity: 100"/>
+                    <Label text="Cost: Free!"/>
                 </VBox>
 
                 <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 10; -fx-border-radius: 5; -fx-border-color: lightgray;">
-                    <Label text="Event 2" style="-fx-font-weight: bold;"/>
-                    <Label text="Date: April 5, 2025"/>
-                    <Label text="Location: Lab 202"/>
+                    <Label text="EV002" style="-fx-font-weight: bold;"/>
+                    <Label text="Event Name:Research Workshop"/>
+                    <Label text="Description: Graduate Workshop"/>
+                    <Label text="Location: Lab 301"/>
+                    <Label text="Date and Time: 10/5/2025 14:00"/>
+                    <Label text="Capacity: 50"/>
+                    <Label text="Cost: Paid($20)"/>
                 </VBox>
             </HBox>
         </VBox>
