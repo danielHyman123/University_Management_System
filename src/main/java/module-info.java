@@ -13,6 +13,7 @@ module com.example.engg1420facultymanagement {
     requires org.apache.poi.ooxml;
     requires org.apache.logging.log4j;
     requires java.sql;
+    requires org.apache.commons.io;
 
     opens com.example.engg1420facultymanagement to javafx.fxml;
     exports com.example.engg1420facultymanagement;

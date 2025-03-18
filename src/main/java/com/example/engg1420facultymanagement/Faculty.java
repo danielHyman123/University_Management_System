@@ -15,6 +15,7 @@ public class Faculty extends User {
     private String researchInterest;
     private String officeLocation;
     private String coursesOffered;
+    private String profilePhotoLocation;
 
     public Faculty(String facultyId, DatabaseManager dbm) throws SQLException {
         this.dbm = dbm;
@@ -27,6 +28,22 @@ public class Faculty extends User {
         this.officeLocation = facultyMember.get(5);
         this.coursesOffered = facultyMember.get(6);
         super.password = facultyMember.get(7);
+
+        List<String> columns = dbm.getColumnValues("Photos", "ID");
+
+        for (String column : columns) {
+            System.out.println(column);
+        }
+
+        List<String> photo = dbm.getRow("Photos", "ID", facultyID);
+
+        for (String row : photo) {
+            System.out.println("Row: " + row);
+            System.out.println(row);
+        }
+
+        this.profilePhotoLocation = photo.get(1);
+        System.out.println("Photo Location " + profilePhotoLocation);
     }
 
     public String getFacultyId() {
@@ -78,6 +95,14 @@ public class Faculty extends User {
         setCourses(newcourses);
     }
 
+    public String getProfilePhotoLocation(){
+        return this.profilePhotoLocation;
+    }
+
+    public void setProfilePhotoLocation(String profilePhotoLocation){
+        this.profilePhotoLocation = profilePhotoLocation;
+    }
+
     public void updateInfo() {
         this.facultyMember.set(0, this.facultyID);
         this.facultyMember.set(1, super.name);
@@ -87,8 +112,21 @@ public class Faculty extends User {
         this.facultyMember.set(5, this.officeLocation);
         this.facultyMember.set(6, this.coursesOffered);
         this.facultyMember.set(7, super.password);
+
         try {
-            this.dbm.updateRowInTable("Faculties", "Faculty ID", this.facultyMember.get(0), this.facultyMember);
+            this.dbm.updateRowInTable("Faculties", "Faculty ID", this.facultyID, this.facultyMember);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateProfilePhoto() {
+        try {
+        List<String> photoStore = new ArrayList<>();
+        photoStore.add(this.facultyID);
+        photoStore.add(this.profilePhotoLocation);
+
+            this.dbm.updateRowInTable("Photos", "ID", this.facultyID, photoStore);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

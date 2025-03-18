@@ -8,8 +8,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.sql.SQLException;
 
 public class FacultyProfileController {
@@ -60,13 +68,42 @@ public class FacultyProfileController {
     private Button backButton;
 
     @FXML
+    private ImageView profileImage;
+
+    @FXML
+    private  TextField passwordText;
+
+    @FXML
+    private Button chooseImageButton;
+
+    @FXML
     public void initialize() {
+        passwordText.setText(faculty.getPassword());
+        passwordText.setVisible(false);
+        chooseImageButton.setVisible(false);
         backButton.setVisible(previous);
         profileTab.setClosable(false);
-        coursesTab.setClosable(false);
 
+        coursesTab.setClosable(false);
         coursesTab.setDisable(!editable);
-        nameLabel.setText(faculty.getFacultyName());
+
+        System.out.println("Photo Location: " + faculty.getProfilePhotoLocation());
+
+        System.out.println("Profile Photo Location: " + HelloApplication.class.getResource("images/" + faculty.getProfilePhotoLocation()));
+
+        Image profile = new Image(HelloApplication.class.getResourceAsStream("images/" + faculty.getProfilePhotoLocation()));
+
+        /*try{
+
+
+            profileImage.setImage(profile);
+        } catch (Exception e) {
+            profileImage.setImage(new Image(HelloApplication.class.getResourceAsStream("images/profile.jpg")));
+        }*/
+
+        profileImage.setImage(profile);
+
+        nameLabel.setText(faculty.getName());
         researchLabel.setText(faculty.getResearchInterest());
         roomLabel.setText(faculty.getOfficeLocation());
         emailLabel.setText(faculty.getEmail());
@@ -119,6 +156,8 @@ public class FacultyProfileController {
             roomField.setVisible(true);
             emailField.setVisible(true);
             researchField.setVisible(true);
+            passwordText.setVisible(true);
+            chooseImageButton.setVisible(true);
         } else {
             editButton.setText("Edit");
 
@@ -129,6 +168,7 @@ public class FacultyProfileController {
             faculty.setOfficeLocation(roomField.getText());
             faculty.setEmail(emailField.getText());
             faculty.setResearchInterest(researchField.getText());
+            faculty.setPassword(passwordText.getText());
 
             faculty.updateInfo();
 
@@ -139,6 +179,8 @@ public class FacultyProfileController {
             roomField.setVisible(false);
             emailField.setVisible(false);
             researchField.setVisible(false);
+            passwordText.setVisible(false);
+            chooseImageButton.setVisible(false);
         }
 
         isEditing = !isEditing;
@@ -172,5 +214,52 @@ public class FacultyProfileController {
 
     protected void setPreviousScene(Scene previousScene) {
         this.previousScene = previousScene;
+    }
+
+    @FXML
+    private void chooseImage(ActionEvent event) {
+        try {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Profile Photo");
+        File file = fileChooser.showOpenDialog((Stage) profileImage.getScene().getWindow());
+        System.out.println(file.getName());
+
+
+        File destination = null;
+        
+        URL resourceUrl = HelloApplication.class.getResource("images/");
+        if (resourceUrl != null) {
+            destination = new File(resourceUrl.toURI());
+            if (destination.isDirectory()) {
+                FileUtils.copyFileToDirectory(file, destination);
+            } else {
+                System.out.println("Destination is not a directory.");
+            }
+        } else {
+            System.out.println("Resource path is null.");
+        }
+
+        //System.out.println(destination.getAbsolutePath());
+
+        File newFile = new File(destination.getAbsolutePath() + "/" + file.getName() );
+
+        //System.out.println(newFile.getAbsolutePath());
+        faculty.setProfilePhotoLocation(newFile.getName());
+        faculty.updateProfilePhoto();
+
+        FileInputStream imageFile = new FileInputStream(newFile);
+
+        Image image = new Image(imageFile);
+        profileImage.setImage(image);
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 }

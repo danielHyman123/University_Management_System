@@ -17,13 +17,19 @@
 
                 <!-- Profile photo (placeholder) -->
                 <ImageView fx:id="profileImage" fitHeight="100.0" fitWidth="100.0" preserveRatio="true">
-                    <image>
-                        <Image url="https://via.placeholder.com/100" /> <!-- Placeholder image -->
-                    </image>
+               <image>
+                  <Image url="@profile.jpg" />
+               </image>
                 </ImageView>
-
-                <!-- Name -->
-                <Label fx:id="nameLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Faculty Member Name" />
+            <VBox prefHeight="77.0" prefWidth="325.0">
+               <children>
+      
+                      <!-- Name -->
+                      <Label fx:id="nameLabel" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Faculty Member Name" />
+                  <TextField fx:id="passwordText" />
+                  <Button fx:id="chooseImageButton" mnemonicParsing="false" onAction="#chooseImage" text="Choose Image" />
+               </children>
+            </VBox>
             </HBox>
 
             <!-- Edit Button -->
