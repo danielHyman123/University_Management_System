@@ -20,12 +20,12 @@ public class HelloApplication extends Application {
         for (String facultyName : faculty) {
             System.out.println("Faculty: " + facultyName);
         }*/
-        String username = "admin";
+        String username = "admin";  //"F0001" ""S20250001";
         if(username.equals("admin")) {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
             fxmlLoader.setController(new facultyController(db, username));
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            stage.setTitle("Faculty Overview!");
+            stage.setTitle("Faculty Overview");
             stage.setScene(scene);
             stage.show();
         }else{
@@ -40,7 +40,7 @@ public class HelloApplication extends Application {
             if(db.belongsToTable("Faculties", username)) {
                 fxmlLoader.setController(new FacultyProfileController(username, access, db));
             }else{
-                fxmlLoader.setController(new FacultyProfileController("F0003", access, db));
+                fxmlLoader.setController(new FacultyProfileController("F0001", access, db));
 
             }
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
