@@ -12,25 +12,11 @@ import java.io.IOException;
 public class AdminViewController {
 
     @FXML private Button viewCoursesButton;
-    @FXML private Button editCourseButton;
-    @FXML private Button addCourseButton;
-    @FXML private Button deleteCourseButton;
     @FXML private Button assignFacultyButton;
-    @FXML private Button manageEnrollmentsButton;
 
     @FXML
     private void viewCourses() {
-        openWindow("ViewCourses.fxml", "View Courses");
-    }
-
-    @FXML
-    private void editCourse() {
-        openWindow("EditCourse.fxml", "Edit Course");
-    }
-
-    @FXML
-    private void addCourse() {
-        openWindow("AddCourse.fxml", "Add Course");
+        openWindow("ViewCoursesAdmin.fxml", "View Courses");
     }
 
     @FXML

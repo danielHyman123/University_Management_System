@@ -34,7 +34,7 @@ public class Course {
     public String getLocation() { return location; }
     public String getFinalExamDateTime() { return finalExamDateTime; }
 
-    // **SETTERS (NEWLY ADDED)**
+    // setters
     public void setCourseName(String courseName) { this.courseName = courseName; }
     public void setCourseCode(int courseCode) { this.courseCode = courseCode; }
     public void setSubjectName(String subjectName) { this.subjectName = subjectName; }

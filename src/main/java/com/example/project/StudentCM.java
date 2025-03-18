@@ -1,6 +1,6 @@
 package com.example.project;
 
-public class Student {
+public class StudentCM {
     private int studentID;
     private String name;
     private String address;
@@ -9,7 +9,7 @@ public class Student {
     private String academicLevel;
     private int currentSemester;
 
-    public Student(int studentID, String name, String address, String phone, String email, String academicLevel, int currentSemester) {
+    public StudentCM(int studentID, String name, String address, String phone, String email, String academicLevel, int currentSemester) {
         this.studentID = studentID;
         this.name = name;
         this.address = address;

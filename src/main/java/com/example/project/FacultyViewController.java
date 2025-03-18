@@ -12,14 +12,14 @@ import java.io.IOException;
 public class FacultyViewController {
 
     @FXML private Button viewCoursesButton;
-    @FXML private Button viewEnrollmentButton;
+    @FXML private Button viewEnrollmentsButton;
 
     @FXML
     private void viewCourses() {
-        openWindow("ViewCourses.fxml", "View Courses");
+        openViewCourses("ViewCourses.fxml", "View Courses");
     }
 
-    private void openWindow(String fxmlFile, String title) {
+    private void openViewCourses(String fxmlFile, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/" + fxmlFile));
             Parent root = loader.load();
@@ -33,7 +33,20 @@ public class FacultyViewController {
     }
 
     @FXML
-    private void viewEnrollment() {
-        System.out.println("Faculty - Viewing Enrollments");
+    private void viewEnrollments() {
+        openViewEnrollments("ViewEnrollments.fxml", "View Enrollment");
+    }
+
+    private void openViewEnrollments(String fxmlFile, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/" + fxmlFile));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

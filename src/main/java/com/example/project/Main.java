@@ -21,7 +21,7 @@ public class Main extends Application {
     }
 
     private void switchToView() throws IOException {
-        String fxmlFile = "Admin";
+        String fxmlFile = "";
 
         if ("Admin".equals(user)) {
             fxmlFile = "AdminView.fxml";

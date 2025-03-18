@@ -48,11 +48,16 @@ public class AddCourseController {
         Course newCourse = new Course(courseName, courseCode, subjectName, sectionNumber,
                 teacherName, capacity, lectureTime, location, finalExamDateTime);
 
-        CourseManager.addCourse(newCourse);
-        // Confirm course added
-        statusLabel.setText("Course added: " + newCourse);
-
+        // Check for conflicts and add the course if no conflict
+        boolean courseAdded = CourseManager.addCourse(newCourse);
+        if (courseAdded) {
+            statusLabel.setText("Course added: " + newCourse);
+        } else {
+            statusLabel.setText("Course could not be added due to a scheduling conflict.");
+        }
     }
+
+
 
     @FXML
     private void goBack() {

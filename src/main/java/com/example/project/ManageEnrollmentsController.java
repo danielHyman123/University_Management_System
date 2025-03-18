@@ -9,23 +9,22 @@ import javafx.stage.Stage;
 public class ManageEnrollmentsController {
 
     @FXML private Label courseLabel;
-    @FXML private TableView<Student> studentsTable;
-    @FXML private TableColumn<Student, Integer> idColumn;
-    @FXML private TableColumn<Student, String> nameColumn;
-    @FXML private TableColumn<Student, String> addressColumn;
-    @FXML private TableColumn<Student, String> phoneColumn;
-    @FXML private TableColumn<Student, String> emailColumn;
-    @FXML private TableColumn<Student, String> levelColumn;
-    @FXML private TableColumn<Student, Integer> semesterColumn;
+    @FXML private TableView<StudentCM> studentsTable;
+    @FXML private TableColumn<StudentCM, Integer> idColumn;
+    @FXML private TableColumn<StudentCM, String> nameColumn;
+    @FXML private TableColumn<StudentCM, String> addressColumn;
+    @FXML private TableColumn<StudentCM, String> phoneColumn;
+    @FXML private TableColumn<StudentCM, String> emailColumn;
+    @FXML private TableColumn<StudentCM, String> levelColumn;
+    @FXML private TableColumn<StudentCM, Integer> semesterColumn;
     @FXML private Button closeButton;
 
-    private ObservableList<Student> studentList = FXCollections.observableArrayList();
+    private ObservableList<StudentCM> studentList = FXCollections.observableArrayList();
 
     public void setCourse(Course course) {
-        courseLabel.setText("Enrolled Students in " + course.getCourseName());
+        courseLabel.setText(course.getCourseName() + " - Enrolled Students");
 
-        // **List is EMPTY now.**
-        // Later, you’ll add the hardcoded students here.
+        // empty list of students
 
         studentsTable.setItems(studentList);
     }
