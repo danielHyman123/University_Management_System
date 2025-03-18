@@ -19,12 +19,6 @@ public class StudentViewController {
         openWindow("ViewCourses.fxml", "View Courses");
     }
 
-    @FXML
-    private void viewEnrollment() {
-        // code for viewing enrollment
-        System.out.println("Student is viewing enrollment.");
-    }
-
     private void openWindow(String fxmlFile, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/" + fxmlFile));

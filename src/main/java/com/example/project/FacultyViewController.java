@@ -11,8 +11,10 @@ import java.io.IOException;
 
 public class FacultyViewController {
 
-    @FXML private Button viewCoursesButton;
-    @FXML private Button viewEnrollmentButton;
+    @FXML
+    private Button viewCoursesButton;
+    @FXML
+    private Button viewEnrollmentButton;
 
     @FXML
     private void viewCourses() {
@@ -30,10 +32,5 @@ public class FacultyViewController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    private void viewEnrollment() {
-        System.out.println("Faculty - Viewing Enrollments");
     }
 }

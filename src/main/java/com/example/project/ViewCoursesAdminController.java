@@ -12,7 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class ViewCoursesController {
+public class ViewCoursesAdminController {
 
     @FXML private TableView<Course> coursesTable;
     @FXML private TableColumn<Course, String> nameColumn;
@@ -25,9 +25,11 @@ public class ViewCoursesController {
     @FXML private TableColumn<Course, String> locationColumn;
     @FXML private TableColumn<Course, String> examColumn;
 
+    @FXML private Button addCourseButton;
     @FXML private Button editCourseButton;
     @FXML private Button deleteCourseButton;
     @FXML private Button manageEnrollmentsButton;
+    @FXML private Button assignFacultyButton;
     @FXML private Button goBackButton;
 
     private ObservableList<Course> courseList;
@@ -53,6 +55,7 @@ public class ViewCoursesController {
         editCourseButton.setDisable(true);
         deleteCourseButton.setDisable(true);
         manageEnrollmentsButton.setDisable(true);
+        assignFacultyButton.setDisable(true);
 
         // Enable buttons only when a course is selected
         coursesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -60,7 +63,28 @@ public class ViewCoursesController {
             editCourseButton.setDisable(!isSelected);
             deleteCourseButton.setDisable(!isSelected);
             manageEnrollmentsButton.setDisable(!isSelected);
+            assignFacultyButton.setDisable(!isSelected);
         });
+    }
+    //open Add Course window
+    @FXML
+    private void openAddCourse() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddCourse.fxml"));
+            Parent root = loader.load();
+
+            Stage addCourseStage = new Stage();
+            addCourseStage.setScene(new Scene(root));
+            addCourseStage.setTitle("Add Course");
+            addCourseStage.initModality(Modality.APPLICATION_MODAL);
+            addCourseStage.showAndWait();
+
+            // Refresh the course list after adding a new course
+            courseList.setAll(CourseManager.getCourses());
+            coursesTable.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Open Edit Course Window
@@ -130,10 +154,40 @@ public class ViewCoursesController {
         }
     }
 
+    @FXML
+    private void assignFaculty() {
+        Course selectedCourse = coursesTable.getSelectionModel().getSelectedItem();
+        if (selectedCourse == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AssignFaculty.fxml"));
+            Parent root = loader.load();
+
+            AssignFacultyController controller = loader.getController();
+            controller.setCourse(selectedCourse);
+            controller.setParentController(this); // Pass reference to update table
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Assign Faculty");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Table should already be refreshed from AssignFacultyController
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshTable() {
+        coursesTable.refresh();
+    }
+
     // Close the window
     @FXML
     private void goBack() {
         Stage stage = (Stage) goBackButton.getScene().getWindow();
         stage.close();
     }
+
 }
