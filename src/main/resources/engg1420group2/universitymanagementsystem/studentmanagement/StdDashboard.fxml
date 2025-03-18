@@ -7,14 +7,14 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="engg1420group2.universitymanagementsystem.studentmanagement.StdDashCtrl">
 
    <children>
-      <ListView fx:id="listviewStudent" layoutY="80.0" prefHeight="320.0" prefWidth="600.0" />
+      <ListView fx:id="listViewStudent" layoutY="80.0" prefHeight="320.0" prefWidth="600.0" />
       <Button fx:id="button_testSwitchScene" layoutX="205.0" layoutY="50.0" mnemonicParsing="false" onAction="#viewStudent" text="View Profile" />
       <Label layoutX="5.0" layoutY="2.0" text="Student Management System">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="button_addStd" layoutX="5.0" layoutY="50.0" mnemonicParsing="false" onAction="#addOrEdit" text="Add Student" />
-      <Button fx:id="button_deleteStd" layoutX="100.0" layoutY="50.0" mnemonicParsing="false" onAction="#buttom_delete" text="Delete Student" />
+      <Button fx:id="button_addStd" layoutX="5.0" layoutY="50.0" mnemonicParsing="false" onAction="#add" text="Add Student" />
+      <Button fx:id="button_deleteStd" layoutX="100.0" layoutY="50.0" mnemonicParsing="false" onAction="#delete" text="Delete Student" />
    </children>
 </Pane>

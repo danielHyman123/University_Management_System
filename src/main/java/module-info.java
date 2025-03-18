@@ -9,6 +9,8 @@ module engg1420group2.universitymanagementsystem.studentmanagement {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires org.apache.poi.ooxml;
+    requires org.apache.logging.log4j;
     requires java.sql;
     requires java.desktop;
 

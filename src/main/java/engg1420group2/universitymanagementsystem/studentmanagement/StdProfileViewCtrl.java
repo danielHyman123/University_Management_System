@@ -20,21 +20,27 @@ import java.util.HashMap;
 
 public class StdProfileViewCtrl  {
 
+    DatabaseManager db;
 
-
+    public StdProfileViewCtrl(DatabaseManager db) {
+        this.db = db;
+    }
     @FXML
     private ListView<String> courseListView;
+
+    @FXML
     private ListView<String> subjectListView;
 
     @FXML
     private Label labelStdName, labelStdID, labelStdEmail, labelStdPhone, labelStdAddress, labelSemester, labelAcmLvl, labelThesis;
+    @FXML
     private Label labelTotalAmt, labelAmtPaid, labelAmtLeft;
 
     @FXML
     private ProgressBar barProgramProgress;
 
     @FXML
-    private ImageView imageProfile;
+    public ImageView profilePhoto;
 
 
     @FXML
@@ -67,10 +73,14 @@ public class StdProfileViewCtrl  {
     }
 
     @FXML
-    void leave (ActionEvent event) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("StdDashboard.fxml"));
-        Stage window = (Stage) BtnExit.getScene().getWindow();
-        window.setScene(new Scene(root, 600, 400));
+    void leave (ActionEvent event) throws IOException {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("StdDashboard.fxml"));
+            Stage window = (Stage) BtnExit.getScene().getWindow();
+            window.setScene(new Scene(root, 600, 400));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -85,7 +95,6 @@ public class StdProfileViewCtrl  {
 
         //Accesses the student object connected to the key string
         //Sets all the labels to fill the main information
-
         labelStdName.setText(sharedDatabase.getStudent(target).getName());
         labelStdID.setText(sharedDatabase.getStudent(target).getStudentID());
         labelStdEmail.setText(sharedDatabase.getStudent(target).getEmail());
@@ -94,11 +103,5 @@ public class StdProfileViewCtrl  {
         labelSemester.setText(sharedDatabase.getStudent(target).getSemester());
         labelAcmLvl.setText(sharedDatabase.getStudent(target).getAcdemicLvl());
         labelThesis.setText(sharedDatabase.getStudent(target).getThesis());
-
-
-
-
-
-
     }
 }

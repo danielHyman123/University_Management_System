@@ -18,6 +18,12 @@ import java.util.HashMap;
 
 public class StdProfileEditCtrl  {
 
+    DatabaseManager db;
+
+    public StdProfileEditCtrl(DatabaseManager db) {
+        this.db = db;
+    }
+
     @FXML
     private TextField tfName, tfAddress, tfPhone, tfEmail, tfPassword, tfThesis;
 
@@ -29,6 +35,8 @@ public class StdProfileEditCtrl  {
 
 
     String target = sharedDatabase.getSelectedName();
+
+
 
 
 
@@ -95,6 +103,15 @@ public class StdProfileEditCtrl  {
     public void initialize() {
 
     //Filling the text fields with whats in the student object
+        tfName.setText(sharedDatabase.getStudent(target).getName());
+        tfAddress.setText(sharedDatabase.getStudent(target).getAddress());
+        tfPhone.setText(sharedDatabase.getStudent(target).getPhone());
+        tfEmail.setText(sharedDatabase.getStudent(target).getEmail());
+        tfPassword.setText(sharedDatabase.getStudent(target).getPassword());
+        tfThesis.setText(sharedDatabase.getStudent(target).getThesis());
+
+        labelStdID.setText(sharedDatabase.getStudent(target).getStudentID());
+
 
     }
 

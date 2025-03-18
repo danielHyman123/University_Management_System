@@ -2,9 +2,9 @@ package engg1420group2.universitymanagementsystem.studentmanagement;
 
 public class User {
 
-    private String name;
-    private String password;
-    private String email;
+    protected String name;
+    protected String password;
+    protected String email;
 
     User() {
 

@@ -21,6 +21,12 @@ import java.util.HashMap;
 
 
 public class StdDashCtrl {
+    DatabaseManager db;
+
+   public StdDashCtrl(DatabaseManager db) {
+       this.db = db;
+   }
+
     @FXML
     private Label title_studentList;
 
@@ -36,74 +42,70 @@ public class StdDashCtrl {
 
     //public static sharedDatabase db = new sharedDatabase();
 
+
     //View Student Button Script
     @FXML
     void viewStudent(ActionEvent event) throws IOException {
         try {
 
+            Stage currentStage = (Stage) button_testSwitchScene.getScene().getWindow();
+            Scene currentScene = currentStage.getScene();
+
+            StdProfileViewCtrl stdProfileViewCtrl = new StdProfileViewCtrl(db);
             FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
+            fxmlLoader.setController(stdProfileViewCtrl);
 
-
-            // Load the scene from the FXML file
             Parent root = fxmlLoader.load();
 
-            // Create a new stage (window)
-            Stage newStage = new Stage();
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("View Student Profile");
 
-            // Create a new scene and set it for the new stage
-            Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
-            newStage.setTitle("Student Information");
-
-            // Set the scene to the new stage and show it
-            newStage.setScene(scene);
-            newStage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     //Edit Button Script
     @FXML
-    void Add(ActionEvent event) throws IOException {
+    void add(ActionEvent event) throws IOException {
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileEditing.fxml"));
+            Stage currentStage = (Stage) button_addStd.getScene().getWindow();
+            Scene currentScene = currentStage.getScene();
 
-            // Load the scene from the FXML file
+            StdCreateCtrl stdCreateCtrl = new StdCreateCtrl(db);
+            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileAdd.fxml"));
+            fxmlLoader.setController(stdCreateCtrl);
+
             Parent root = fxmlLoader.load();
 
-            // Create a new stage (window)
-            Stage newStage = new Stage();
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("Add Student");
 
-            // Create a new scene and set it for the new stage
-            Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
-            newStage.setTitle("Edit/Add Student Information");
-
-            // Set the scene to the new stage and show it
-            newStage.setScene(scene);
-            newStage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
     }
 
     //Delete Button Script
     @FXML
-    void buttom_delete(ActionEvent event) throws IOException {
+    void delete(ActionEvent event) throws IOException {
         listViewStudent.getItems().remove(listViewStudent.getSelectionModel().getSelectedIndex());
 
     }
 
 
 
+
+
     @FXML
     public void initialize() {
 
-        //sharedDatabase db = new sharedDatabase();
+
         //Populates the sample student list
+
         for(int i = 0; i < sharedDatabase.stdNameList.size(); i++){
             listViewStudent.getItems().add(sharedDatabase.stdNameList.get(i));
         }
@@ -115,8 +117,6 @@ public class StdDashCtrl {
         listViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             sharedDatabase.setSelectedName(newValue);  // Save the selected name to SharedModel
         });
-
-
 
 
         //Creates the right click menu
@@ -201,6 +201,10 @@ public class StdDashCtrl {
             });
             return cell;
             });
+
+
+
+
 
 
 

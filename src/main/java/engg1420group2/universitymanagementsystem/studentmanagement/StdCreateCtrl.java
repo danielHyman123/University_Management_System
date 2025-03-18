@@ -13,15 +13,18 @@ import java.io.IOException;
 
 public class StdCreateCtrl {
 
+    DatabaseManager db;
+
+    public StdCreateCtrl(DatabaseManager db) {
+        this.db = db;
+    }
+
     @FXML
     private TextField tfName, tfAddress, tfPhone, tfEmail;
 
     @FXML
     private Label label_ID;
 
-    /*
-    Buttons
-     */
 
     //Save Changes Button
     @FXML
@@ -34,6 +37,8 @@ public class StdCreateCtrl {
     void exit(ActionEvent event) {
 
     }
+
+
 
 
 }
