@@ -20,6 +20,7 @@ public class Student extends User {
     private String thesis;
     private Double academicProgress;
 
+    private String[] subjects;
 
 
     public Student(String studentID, DatabaseManager dbm) throws SQLException {
@@ -33,6 +34,10 @@ public class Student extends User {
         this.academicLvl = studentMember.get(5);
         this.semster = studentMember.get(6);
         //Handle Subjects Registerd
+        String[] subjectCol = {"Subject Registered"};
+
+        subjects =  dbm.getFilteredValues("UMS_Data_Students", subjectCol, "Student ID", studentID).get(0).split(", ");
+
         this.thesis = studentMember.get(8);
         this.academicProgress = Double.parseDouble(studentMember.get(9));
         super.password = studentMember.get(10);
@@ -68,6 +73,9 @@ public class Student extends User {
     public double getAcademicProgress() {
         return academicProgress;
     }
+    public String[] getSubjects() {
+        return subjects;
+    }
 
     //Setter Methods
 
@@ -93,6 +101,10 @@ public class Student extends User {
 
     public void setAcademicProgress(double academicProgress) {
         this.academicProgress = academicProgress;
+    }
+
+    public void updateSubjects(String[] subjects, int index) {
+        this.subjects[index] = subjects[index];
     }
 
     public void updateStudent() throws SQLException {

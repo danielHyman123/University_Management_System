@@ -24,7 +24,7 @@ public class StdCreateCtrl {
     }
 
     @FXML
-    private TextField tfName, tfAddress, tfPhone, tfEmail, tfPassword;
+    private TextField tfName, tfAddress, tfPhone, tfEmail, tfPassword, tfProgress, tfThesis;
 
     @FXML
     private Label label_ID;
@@ -33,12 +33,15 @@ public class StdCreateCtrl {
     //Save Changes Button
     @FXML
     void addStudent(ActionEvent event) {
+        //Still need to figure out the subject/courses, student ID & photo
         String[] student = new String[11];
+
         student[1] = tfName.getText();
         student[2] = tfAddress.getText();
         student[3] = tfPhone.getText();
         student[4] = tfEmail.getText();
-        //student[6] = academic level
+        student[9] = tfThesis.getText();
+        student[10] = tfProgress.getText();
         student[11] = tfPassword.getText();
 
         try {
@@ -57,6 +60,10 @@ public class StdCreateCtrl {
     //Exit Button
     @FXML
     void exit(ActionEvent event) {
+        if (previousScene != null) {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(previousScene);
+        }
 
     }
 

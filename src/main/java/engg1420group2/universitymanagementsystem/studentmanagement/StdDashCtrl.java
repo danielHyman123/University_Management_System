@@ -30,13 +30,13 @@ public class StdDashCtrl {
         this.username = username;
 
         if (username.equalsIgnoreCase("admin")) {
-            this.access = "admin";
+            this.access = "Admin";
         }else if(db.belongsToTable("Faculties", username)){
-            this.access = "faculty";
+            this.access = "Faculty";
         }else if(db.belongsToTable("Students", username)){
-            this.access = "student";
+            this.access = "Student";
         }else{
-            this.access = "student";
+            this.access = "Student";
         }
     }
 
@@ -48,9 +48,39 @@ public class StdDashCtrl {
     @FXML
     private Button btnView, btnAddStd, btnDelStd;
 
-    //View Student Button Script
+    //Delete Button Script
     @FXML
-    void viewStudent(ActionEvent event, String studentInfo) {
+    void delete(ActionEvent event) throws IOException {
+        listViewStudent.getItems().remove(listViewStudent.getSelectionModel().getSelectedIndex());
+    }
+
+    @FXML
+    void view(ActionEvent event) throws IOException {
+        viewStudent(sharedDatabase.getSelectedName());
+    }
+
+    @FXML
+    void addPage(ActionEvent event) throws IOException {
+        try{
+            Stage currentStage = (Stage) btnAddStd.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
+
+            StdCreateCtrl stdCreateCtrl = new StdCreateCtrl(previousScene, db);
+            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileAdd.fxml"));
+            fxmlLoader.setController(stdCreateCtrl);
+            Parent root = fxmlLoader.load();
+
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("Add Student");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+    void viewStudent(String studentInfo) {
         try {
             StdProfileViewCtrl profileController = new StdProfileViewCtrl(studentInfo, access, db);
 
@@ -71,21 +101,15 @@ public class StdDashCtrl {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         //SQL Exception Catch needs to go here
     }
 
-    //Edit Button Script
-    @FXML
-    void add(ActionEvent event) throws IOException {
 
-    }
 
-    //Delete Button Script
-    @FXML
-    void delete(ActionEvent event) throws IOException {
-        listViewStudent.getItems().remove(listViewStudent.getSelectionModel().getSelectedIndex());
-    }
+
 
     @FXML
     public void initialize() throws SQLException {
@@ -102,12 +126,12 @@ public class StdDashCtrl {
 
         listViewStudent.getItems().addAll(viewableInfo);
 
-        /*
+
         listViewStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             sharedDatabase.setSelectedName(newValue);  // Save the selected name to SharedModel
         });
 
-         */
+
 
         //Creates the right click menu
         listViewStudent.setCellFactory(lv -> {
@@ -121,27 +145,7 @@ public class StdDashCtrl {
             viewProfile.textProperty().bind(Bindings.format("View Profile for \"%s\"", cell.itemProperty()));
             viewProfile.setOnAction(event -> {
                 String item = cell.getItem();
-
-                //Sending to another screen
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
-
-                    // Load the scene from the FXML file
-                    Parent root = fxmlLoader.load();
-
-                    // Create a new stage (window)
-                    Stage newStage = new Stage();
-
-                    // Create a new scene and set it for the new stage
-                    Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
-                    newStage.setTitle("Student Information");
-
-                    // Set the scene to the new stage and show it
-                    newStage.setScene(scene);
-                    newStage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                viewStudent(item);
             });
 
             //Creating the edit profile option for the right-click menu
@@ -150,25 +154,19 @@ public class StdDashCtrl {
             editProfile.setOnAction(event -> {
                 String item = cell.getItem();
 
-                //Loading the editing page
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileEditing.fxml"));
+                try{
+                    Stage currentStage = (Stage) btnAddStd.getScene().getWindow();
+                    Scene previousScene = currentStage.getScene(); // Save current scene
 
-                    // Load the scene from the FXML file
+                    StdProfileEditCtrl stdProfileEditCtrl = new StdProfileEditCtrl(db, item);
+                    FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileEditing.fxml"));
+                    fxmlLoader.setController(stdProfileEditCtrl);
                     Parent root = fxmlLoader.load();
 
-                    // Create a new stage (window)
-                    Stage newStage = new Stage();
-
-                    // Create a new scene and set it for the new stage
-                    Scene scene = new Scene(root, 600, 400); // Adjust width and height as needed
-                    newStage.setTitle("Add/Edit Profile");
-
-                    // Set the scene to the new stage and show it
-                    newStage.setScene(scene);
-                    newStage.show();
+                    currentStage.setScene(new Scene(root, 600, 400));
+                    currentStage.setTitle("Edit Student");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             });
 
@@ -197,7 +195,6 @@ public class StdDashCtrl {
 
             return cell;
             });
-
     }
 }
 

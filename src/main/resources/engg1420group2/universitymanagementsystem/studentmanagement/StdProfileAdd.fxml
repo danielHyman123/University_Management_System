@@ -28,6 +28,6 @@
          </font>
       </Label>
       <ChoiceBox layoutX="13.0" layoutY="314.0" prefWidth="150.0" />
-      <TextField layoutX="226.0" layoutY="314.0" promptText="Progress" />
+      <TextField fx:id="tfProgress" layoutX="226.0" layoutY="314.0" promptText="Progress" />
    </children>
 </Pane>

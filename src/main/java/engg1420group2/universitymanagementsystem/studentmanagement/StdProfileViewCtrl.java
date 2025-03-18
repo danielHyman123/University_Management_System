@@ -8,8 +8,10 @@ import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.*;
 import javafx.stage.*;
+import org.apache.commons.io.FileUtils;
 
 import javax.swing.text.html.ImageView;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -20,14 +22,27 @@ import java.util.HashMap;
 
 public class StdProfileViewCtrl  {
 
-    DatabaseManager db;
-    String studentID;
-    String access;
+    private DatabaseManager db;
+    private String studentInfo;
+    private String access;
+    private boolean canEdit;
+    private Student student;
+    private Scene previousScene;
+    private boolean previous;
 
-    public StdProfileViewCtrl(String studentID, String access, DatabaseManager db) {
+    public StdProfileViewCtrl(String studentInfo, String access, DatabaseManager db) throws SQLException {
         this.db = db;
-        this.studentID = studentID;
-        this.access = access;
+        String[] parts = studentInfo.split(":");
+        this.student = new Student(parts[0], db);
+        /*
+        this.canEdit = !access.equals("student");
+        if(access.equals("admin")) {
+            previous = true;
+        }else{
+            previous = false;
+        }
+
+         */
     }
 
     @FXML
@@ -47,18 +62,94 @@ public class StdProfileViewCtrl  {
     @FXML
     public ImageView profilePhoto;
 
-
     @FXML
     private Button BtnExit;
 
 
     @FXML
     void exit (ActionEvent event) throws IOException {
-
+        if (previousScene != null) {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(previousScene);
+        }
     }
+
+    //Photo File Stuff
+    //Just what ethan did (will probably just be the same way he did it)
+    /*
+    @FXML
+    private void chooseImage(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose Profile Photo");
+            File file = fileChooser.showOpenDialog((Stage) profilePhoto.getScene().getWindow());
+            System.out.println(file.getName());
+
+
+            File destination = null;
+
+            URL resourceUrl = StdDashApp.class.getResource("images/");
+            if (resourceUrl != null) {
+                destination = new File(resourceUrl.toURI());
+                if (destination.isDirectory()) {
+                    FileUtils.copyFileToDirectory(file, destination);
+                } else {
+                    System.out.println("Destination is not a directory.");
+                }
+            } else {
+                System.out.println("Resource path is null.");
+            }
+
+            //System.out.println(destination.getAbsolutePath());
+
+            File newFile = new File(destination.getAbsolutePath() + "/" + file.getName() );
+
+            //System.out.println(newFile.getAbsolutePath());
+            faculty.setProfilePhotoLocation(newFile.getName());
+            faculty.updateProfilePhoto();
+
+            FileInputStream imageFile = new FileInputStream(newFile);
+
+            Image image = new Image(imageFile);
+            profileImage.setImage(image);
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+     */
 
     @FXML
     public void initialize() {
+
+        labelStdName.setText(student.getName());
+        labelStdID.setText(student.getStudentID());
+        labelStdEmail.setText(student.getEmail());
+        labelStdPhone.setText(student.getPhoneNumber());
+        labelStdAddress.setText(student.getAddress());
+        labelSemester.setText(student.getSemster());
+        labelAcmLvl.setText(student.getAcademicLvl());
+        labelThesis.setText(student.getThesis());
+
+        String[] subjects = student.getSubjects();
+
+        for (int i = 0; i < subjects.length; i++) {
+            subjectListView.getItems().add(subjects[i]);
+        }
+
+        /* Figure out Image things
+            Get progress bar working
+            tutition calculations
+            course and subject lists
+            making certain things not visible
+         */
+
+
 
 
     }

@@ -19,9 +19,12 @@ import java.util.HashMap;
 public class StdProfileEditCtrl  {
 
     DatabaseManager db;
+    String studentInfo;
 
-    public StdProfileEditCtrl(DatabaseManager db) {
+    public StdProfileEditCtrl(DatabaseManager db, String studentInfo) {
         this.db = db;
+        this.studentInfo = studentInfo;
+
     }
 
     @FXML
