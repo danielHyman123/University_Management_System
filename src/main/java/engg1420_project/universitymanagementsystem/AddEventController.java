@@ -1,4 +1,4 @@
-package engg1420_project.universitymanagement;
+package engg1420_project.universitymanagementsystem;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
