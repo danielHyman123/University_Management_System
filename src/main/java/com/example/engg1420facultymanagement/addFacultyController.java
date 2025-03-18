@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class addFacultyController {
@@ -54,12 +53,6 @@ public class addFacultyController {
 
     @FXML
     private Button cancelButton;
-
-    // Initialize method or other handlers can be defined here
-    @FXML
-    public void initialize() {
-
-    }
 
     @FXML
     private void save(ActionEvent event) {

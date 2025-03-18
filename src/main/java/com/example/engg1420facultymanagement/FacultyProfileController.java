@@ -77,6 +77,9 @@ public class FacultyProfileController {
     private Button chooseImageButton;
 
     @FXML
+    private Label degreeLabel;
+
+    @FXML
     public void initialize() {
         passwordText.setText(faculty.getPassword());
         passwordText.setVisible(false);
@@ -87,6 +90,7 @@ public class FacultyProfileController {
         coursesTab.setClosable(false);
         coursesTab.setDisable(!editable);
 
+        degreeLabel.setText(faculty.getDegree());
         //System.out.println("Photo Location: " + faculty.getProfilePhotoLocation());
 
         //System.out.println("Profile Photo Location: " + HelloApplication.class.getResource("images/" + faculty.getProfilePhotoLocation()));
