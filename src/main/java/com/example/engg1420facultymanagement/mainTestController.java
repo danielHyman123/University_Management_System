@@ -19,20 +19,37 @@ public class mainTestController {
 
     @FXML
     void initialize() throws SQLException, IOException {
+
         DatabaseManager db = new DatabaseManager("/home/user/test.db");
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
-        fxmlLoader.setController(new facultyController(db, "admin", mainAnchorPane));
-        AnchorPane pane = fxmlLoader.load();
+        String access;
 
-        mainAnchorPane.getChildren().add(pane);
+        String username = "admin";  //"F0001" ""S20250001";
+        if(username.equals("admin")) {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
+            fxmlLoader.setController(new facultyController(db, "admin", mainAnchorPane));
+            AnchorPane pane = fxmlLoader.load();
+            mainAnchorPane.getChildren().clear();
+            mainAnchorPane.getChildren().add(pane);
+        }else{
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-profile.fxml"));
+            if(db.belongsToTable("Faculties", username)){
+                access = "faculty";
+            }else if(db.belongsToTable("Students", username)){
+                access = "student";
+            }else{
+                access = "student";
+            }
+            if(db.belongsToTable("Faculties", username)) {
+                fxmlLoader.setController(new FacultyProfileController(username, access, db, mainAnchorPane));
+            }else{
+                fxmlLoader.setController(new FacultyProfileController("F0001", access, db, mainAnchorPane));
+                AnchorPane pane = fxmlLoader.load();
+                mainAnchorPane.getChildren().clear();
+                mainAnchorPane.getChildren().add(pane);
+            }
 
+        }
 
-
-
-       /* Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("Faculty Overview");
-        stage.setScene(scene);
-        stage.show();*/
     }
 
 }
