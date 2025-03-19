@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,10 +19,12 @@ import java.util.List;
 public class addFacultyController {
     private Scene previousScene;
     private DatabaseManager db;
+    private AnchorPane superAnchorPane;
 
-    public addFacultyController(Scene prevtiousScene, DatabaseManager db) {
+    public addFacultyController(Scene prevtiousScene, DatabaseManager db, AnchorPane superAnchorPane) {
         this.previousScene = prevtiousScene;
         this.db = db;
+        this.superAnchorPane = superAnchorPane;
     }
 
     @FXML
@@ -88,14 +91,12 @@ public class addFacultyController {
                 }
 
                 try {
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
-                    fxmlLoader.setController(new facultyController(db, "admin"));
-                    Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-                    stage.setTitle("Hello!");
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (SQLException | IOException e) {
+                    fxmlLoader.setController(new facultyController(db, "admin", superAnchorPane));
+                    AnchorPane pane = fxmlLoader.load();
+                    superAnchorPane.getChildren().clear();
+                    superAnchorPane.getChildren().add(pane);
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
@@ -109,9 +110,22 @@ public class addFacultyController {
 
     @FXML
     private void cancel(ActionEvent event) {
-        if (previousScene != null) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
+            fxmlLoader.setController(new facultyController(db, "admin", superAnchorPane));
+            AnchorPane pane = fxmlLoader.load();
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        /*if (previousScene != null) {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(previousScene);
-        }
+        }*/
     }
 }

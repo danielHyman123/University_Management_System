@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,10 +22,13 @@ public class facultyController {
     private String username;
     private String access;
     private Faculty faculty;
+    private AnchorPane superAnchorPane;
+    private VBox superVBox;
 
-    public facultyController(DatabaseManager db, String username) throws SQLException {
+    public facultyController(DatabaseManager db, String username, AnchorPane mainAnchorPane) throws SQLException {
         this.db = db;
         this.username = username;
+        this.superAnchorPane = mainAnchorPane;
 
         if (username.equalsIgnoreCase("admin")) {
             this.access = "admin";
@@ -112,13 +117,14 @@ public class facultyController {
             Stage currentStage = (Stage) facultyList.getScene().getWindow();
             Scene previousScene = currentStage.getScene(); // Save current scene
 
-            addFacultyController addFacultyController = new addFacultyController(previousScene, db);
+            addFacultyController addFacultyController = new addFacultyController(previousScene, db, superAnchorPane);
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("add-faculty.fxml"));
             fxmlLoader.setController(addFacultyController);
-            Parent root = fxmlLoader.load();
+            AnchorPane pane = fxmlLoader.load();
 
-            currentStage.setScene(new Scene(root, 600, 400));
-            currentStage.setTitle("Add Faculty");
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -135,47 +141,51 @@ public class facultyController {
         }
     }
     private void openViewProfile(String facultyInfo) {
-        try {
-            FacultyProfileController profileController = new FacultyProfileController(facultyInfo, access, db);
 
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-profile.fxml"));
-            fxmlLoader.setController(profileController);
-            Parent root = fxmlLoader.load();
-
+        try{
             // Get current stage and store previous scene
             Stage currentStage = (Stage) facultyList.getScene().getWindow();
             Scene previousScene = currentStage.getScene(); // Save current scene
 
-            // Pass the previous scene to the new controller
-            profileController.setPreviousScene(previousScene);
+            FacultyProfileController profileController = new FacultyProfileController(facultyInfo, access, db, superAnchorPane);
 
-            // Switch to the new scene
-            currentStage.setScene(new Scene(root, 600, 400));
-            currentStage.setTitle("Faculty Profile");
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-profile.fxml"));
+            fxmlLoader.setController(profileController);
+
+            AnchorPane pane = fxmlLoader.load();
+
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void assignCourses(String facultyInfo) {
+
         try{
-        String[] parts = facultyInfo.split(":");
-        Stage currentStage = (Stage) facultyList.getScene().getWindow();
-        Scene previousScene = currentStage.getScene(); // Save current scene
+            String[] parts = facultyInfo.split(":");
+            Stage currentStage = (Stage) facultyList.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
 
-        assignCoursesController assignCoursesController = new assignCoursesController(db, previousScene, parts[0]);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("assign-courses.fxml"));
-        fxmlLoader.setController(assignCoursesController);
-        Parent root = fxmlLoader.load();
+            assignCoursesController assignCoursesController = new assignCoursesController(db, previousScene, parts[0], superAnchorPane);
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("assign-courses.fxml"));
+            fxmlLoader.setController(assignCoursesController);
+            AnchorPane pane = fxmlLoader.load();
 
-        currentStage.setScene(new Scene(root, 600, 400));
-        currentStage.setTitle("Assign Courses");
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
+
+
 
     }
 

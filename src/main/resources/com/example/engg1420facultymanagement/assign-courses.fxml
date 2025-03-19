@@ -8,6 +8,9 @@
 
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
+
 <VBox xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" spacing="10">
 
    <!-- ListView to display the list of courses with checkboxes -->
@@ -23,3 +26,4 @@
       <Button text="Cancel" fx:id="cancelButton" onAction="#cancel"/>
    </HBox>
 </VBox>
+</AnchorPane>

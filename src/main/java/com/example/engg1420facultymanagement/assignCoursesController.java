@@ -4,14 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +26,13 @@ public class assignCoursesController {
     private Scene previousScene;
     private String facultyID;
     private Faculty faculty;
+    private AnchorPane superAnchorPane;
 
-    public assignCoursesController(DatabaseManager db, Scene previousScene, String facultyID) {
+    public assignCoursesController(DatabaseManager db, Scene previousScene, String facultyID, AnchorPane superAnchorPane) {
         this.db = db;
         this.previousScene = previousScene;
         this.facultyID = facultyID;
+        this.superAnchorPane = superAnchorPane;
         try {
             this.faculty = new Faculty(facultyID, db);
         } catch (SQLException e) {
@@ -84,18 +89,30 @@ public class assignCoursesController {
         faculty.addCourses(courses);
         faculty.updateInfo();
 
-        if (previousScene != null) {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(previousScene);
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
+            fxmlLoader.setController(new facultyController(db, "admin", superAnchorPane));
+            AnchorPane pane = fxmlLoader.load();
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
         }
+
 
     }
 
     @FXML
     private void cancel(ActionEvent event) {
-        if (previousScene != null) {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(previousScene);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
+            fxmlLoader.setController(new facultyController(db, "admin", superAnchorPane));
+            AnchorPane pane = fxmlLoader.load();
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

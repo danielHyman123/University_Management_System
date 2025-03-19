@@ -2,12 +2,15 @@ package com.example.engg1420facultymanagement;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +19,18 @@ public class studentListController {
 
     private DatabaseManager db;
     private Scene previousScene;
-    String course;
+    private String course;
+    private AnchorPane superAnchorPane;
+    private String previousFacultyID;
+    private String access;
 
-    public studentListController(DatabaseManager db, Scene previousScene, String course) {
+    public studentListController(DatabaseManager db, Scene previousScene, String course, AnchorPane superAnchorPane, String facultyID, String access) {
         this.db = db;
         this.previousScene = previousScene;
         this.course = course;
+        this.superAnchorPane = superAnchorPane;
+        this.previousFacultyID = facultyID;
+        this.access = access;
         System.out.println("Course: " + course);
     }
 
@@ -53,9 +62,25 @@ public class studentListController {
 
     @FXML
     void goBack(ActionEvent event) {
-        if (previousScene != null) {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(previousScene);
+        try{
+            // Get current stage and store previous scene
+            Stage currentStage = (Stage) studentsList.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
+
+            FacultyProfileController profileController = new FacultyProfileController(this.previousFacultyID, access, db, superAnchorPane);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-profile.fxml"));
+            fxmlLoader.setController(profileController);
+
+            AnchorPane pane = fxmlLoader.load();
+
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

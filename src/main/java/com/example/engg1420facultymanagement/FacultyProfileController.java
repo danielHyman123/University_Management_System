@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
@@ -27,12 +28,16 @@ public class FacultyProfileController {
     private Scene previousScene;
     private boolean isEditing = false;
     private boolean previous;
+    private AnchorPane superAnchorPane;
+    private String access;
 
-    public FacultyProfileController(String facultyInfo, String access, DatabaseManager db) throws SQLException {
+    public FacultyProfileController(String facultyInfo, String access, DatabaseManager db, AnchorPane superAnchorPane) throws SQLException {
         this.db = db;
+        this.superAnchorPane = superAnchorPane;
         String[] parts = facultyInfo.split(":");
         this.faculty = new Faculty(parts[0], this.db);
         this.editable = !access.equals("student");
+        this.access = access;
         if(access.equals("admin")) {
             previous = true;
         }else{
@@ -196,28 +201,35 @@ public class FacultyProfileController {
 
     @FXML
     private void goBack(ActionEvent event) {
-        if (previousScene != null) {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(previousScene);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("faculty-overview.fxml"));
+            fxmlLoader.setController(new facultyController(db, "admin", superAnchorPane));
+            AnchorPane pane = fxmlLoader.load();
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void openStudentsList(String course) {
+
         try {
             Stage currentStage = (Stage) coursesListView.getScene().getWindow();
             Scene currentScene = currentStage.getScene();
 
-            studentListController studentListController = new studentListController(db, currentScene, course);
+            studentListController studentListController = new studentListController(db, currentScene, course, superAnchorPane, faculty.getFacultyId(), this.access);
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("students-list.fxml"));
             fxmlLoader.setController(studentListController);
+            AnchorPane pane = fxmlLoader.load();
+            superAnchorPane.getChildren().clear();
+            superAnchorPane.getChildren().add(pane);
 
-            Parent root = fxmlLoader.load();
 
-            currentStage.setScene(new Scene(root, 600, 400));
-            currentStage.setTitle("Faculty Profile");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+
     }
 
     protected void setPreviousScene(Scene previousScene) {
