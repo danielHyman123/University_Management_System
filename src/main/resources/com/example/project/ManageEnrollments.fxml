@@ -3,24 +3,18 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.project.ManageEnrollmentsController">
+            fx:controller="com.example.project.AddStudentController">
     <VBox spacing="10" alignment="CENTER">
-        <Label fx:id="courseLabel" text="Manage Enrollments" style="-fx-font-size: 16px;"/>
+        <Label fx:id="studentLabel" text="Select a Student to Add" style="-fx-font-size: 16px;"/>
 
-        <TableView fx:id="studentsTable">
-            <columns>
-                <TableColumn fx:id="idColumn" text="Student ID"/>
-                <TableColumn fx:id="nameColumn" text="Name"/>
-                <TableColumn fx:id="addressColumn" text="Address"/>
-                <TableColumn fx:id="phoneColumn" text="Telephone"/>
-                <TableColumn fx:id="emailColumn" text="Email"/>
-                <TableColumn fx:id="levelColumn" text="Academic Level"/>
-                <TableColumn fx:id="semesterColumn" text="Current Semester"/>
-            </columns>
-        </TableView>
+        <ComboBox fx:id="studentComboBox" />
 
-        <Button fx:id="closeButton" text="Close" onAction="#closeWindow"/>
+        <HBox spacing="10">
+            <Button fx:id="addStudentButton" text="Add Student" onAction="#addStudent"/>
+            <Button fx:id="closeButton" text="Close" onAction="#closeWindow"/>
+        </HBox>
     </VBox>
 </AnchorPane>
+
 
 

@@ -94,6 +94,31 @@ public class CourseManager {
 
     }
 
+    public static Course getCourseByNameAndSection(String courseName, int section) {
+        for (Course course : courses) {
+            if (course.getCourseName().equals(courseName) && course.getSectionNumber() == section) {
+                return course;
+            }
+        }
+        return null;
+    }
+
+    // Add a student to a course if there is room
+    public static boolean addStudentToCourse(Course course, StudentCM student) {
+        if (course != null) {
+            return course.enrollStudent(student);
+        }
+        return false;
+    }
+
+    // Remove a student from a course
+    public static boolean removeStudentFromCourse(Course course, StudentCM student) {
+        if (course != null) {
+            return course.removeStudent(student);
+        }
+        return false;
+    }
+
     public static void deleteCourse(Course course) {
         courses.remove(course);
     }

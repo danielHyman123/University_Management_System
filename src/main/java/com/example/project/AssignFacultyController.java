@@ -13,7 +13,7 @@ public class AssignFacultyController {
     private Course selectedCourse;
     private ViewCoursesAdminController parentController;  // Reference to update table
 
-    private static final String[] teachers = {"Teacher A", "Teacher B", "Teacher C"};
+    private static final String[] teachers = {"Dr. Alan Turing", "Prof. Emily Brontë", "Dr. Grace Hopper", "Dr. Lakyn Copeland", "Albozr Gharabaghi"};
 
     public void setCourse(Course course) {
         this.selectedCourse = course;

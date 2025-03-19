@@ -1,5 +1,8 @@
 package com.example.project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Course {
     private String courseName;
     private int courseCode;
@@ -10,6 +13,7 @@ public class Course {
     private String lectureTime;
     private String location;
     private String finalExamDateTime;
+    private List<StudentCM> enrolledStudents = new ArrayList<>();
 
     public Course(String courseName, int courseCode, String subjectName, int sectionNumber, String teacherName, int capacity, String lectureTime, String location, String finalExamDateTime) {
         this.courseName = courseName;
@@ -33,8 +37,9 @@ public class Course {
     public String getLectureTime() { return lectureTime; }
     public String getLocation() { return location; }
     public String getFinalExamDateTime() { return finalExamDateTime; }
+    public List<StudentCM> getEnrolledStudents() { return enrolledStudents; }
 
-    // setters
+    // Setters
     public void setCourseName(String courseName) { this.courseName = courseName; }
     public void setCourseCode(int courseCode) { this.courseCode = courseCode; }
     public void setSubjectName(String subjectName) { this.subjectName = subjectName; }
@@ -45,8 +50,23 @@ public class Course {
     public void setLocation(String location) { this.location = location; }
     public void setFinalExamDateTime(String finalExamDateTime) { this.finalExamDateTime = finalExamDateTime; }
 
+    // Enroll a student
+    public boolean enrollStudent(StudentCM student) {
+        if (enrolledStudents.size() < capacity) {
+            enrolledStudents.add(student);
+            return true;  // Enrollment successful
+        } else {
+            return false; // Course is full
+        }
+    }
+
+    // Remove a student
+    public boolean removeStudent(StudentCM student) {
+        return enrolledStudents.remove(student);
+    }
+
     @Override
     public String toString() {
-        return subjectName + courseCode;
+        return subjectName + " " + courseCode;
     }
 }

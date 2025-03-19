@@ -138,7 +138,8 @@ public class ViewCoursesAdminController {
         if (selectedCourse == null) return;
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ManageEnrollments.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/ManageEnrollments.fxml"));
+
             Parent root = loader.load();
 
             ManageEnrollmentsController controller = loader.getController();
