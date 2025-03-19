@@ -10,6 +10,7 @@ module engg1420_project.universitymanagementsystem {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires jdk.jdi;
 
     opens engg1420_project.universitymanagementsystem to javafx.fxml;
     exports engg1420_project.universitymanagementsystem;
