@@ -10,7 +10,8 @@ import javafx.scene.*;
 import javafx.stage.*;
 import org.apache.commons.io.FileUtils;
 
-import javax.swing.text.html.ImageView;
+
+import javafx.scene.image.ImageView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -29,8 +30,9 @@ public class StdProfileViewCtrl  {
     private Student student;
     private Scene previousScene;
     private boolean previous;
+    private String username;
 
-    public StdProfileViewCtrl(String studentInfo, String access, DatabaseManager db) throws SQLException {
+    public StdProfileViewCtrl(String studentInfo, String access, DatabaseManager db, String username) throws SQLException {
         this.db = db;
         String[] parts = studentInfo.split(":");
         this.student = new Student(parts[0], db);
@@ -43,6 +45,7 @@ public class StdProfileViewCtrl  {
         }
 
          */
+        this.username = username;
     }
 
     @FXML
@@ -63,14 +66,31 @@ public class StdProfileViewCtrl  {
     public ImageView profilePhoto;
 
     @FXML
-    private Button BtnExit;
+    private Button btnExit;
+
 
 
     @FXML
-    void exit (ActionEvent event) throws IOException {
-        if (previousScene != null) {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(previousScene);
+    public void exit (ActionEvent event) throws IOException {
+        try {
+            StdDashCtrl stdDashCtrl = new StdDashCtrl(db,username);
+            FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdDashboard.fxml"));
+            fxmlLoader.setController(stdDashCtrl);
+            Parent root = fxmlLoader.load();
+
+            // Get current stage and store previous scene
+            Stage currentStage = (Stage) btnExit.getScene().getWindow();
+            Scene previousScene = currentStage.getScene(); // Save current scene
+
+
+
+            currentStage.setScene(new Scene(root, 600, 400));
+            currentStage.setTitle("Studet Management System");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

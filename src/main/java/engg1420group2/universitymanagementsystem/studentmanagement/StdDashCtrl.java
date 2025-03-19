@@ -30,40 +30,51 @@ public class StdDashCtrl {
         this.db = db;
         this.username = username;
 
+        /*
         if (username.equalsIgnoreCase("admin")) {
             this.access = "Admin";
-        }else if(db.belongsToTable("Faculties", username)){
+        }else if(db.belongsToTable("UMS_Data_Faculties", username)){
             this.access = "Faculty";
-        }else if(db.belongsToTable("Students", username)){
+        }else if(db.belongsToTable("UMS_Data_Students", username)){
             this.access = "Student";
         }else{
             this.access = "Student";
         }
+
+         */
     }
+
+
 
     @FXML
     private ListView<String> listViewStudent;
+
     @FXML
-    private Button btnView, btnAddStd, btnDelStd;
+    private Button btnView;
+
+    @FXML
+    private Button btnDelStd;
+
+    @FXML
+    private Button btnAddStd;
 
     //Buttons:
     @FXML
-    void deleteStd(ActionEvent event) throws IOException {
+    public void deleteStd(ActionEvent event) throws IOException {
         listViewStudent.getItems().remove(sharedDatabase.getSelectedName());
         String[] parts = sharedDatabase.getSelectedName().split(":");
         System.out.println(parts[0]);
         try {
-            db.deleteRowFromTable("UMS_Data_Students", "Student ID", parts[0]);
+            db.deleteRowFromTable("UMS_Data_Students ", "Student ID", parts[0]);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @FXML
-    void viewStd(ActionEvent event) throws IOException {
+    public void viewStd(ActionEvent event) throws IOException {
         try {
-            StdProfileViewCtrl profileController = new StdProfileViewCtrl(sharedDatabase.getSelectedName(), access, db);
-
+            StdProfileViewCtrl profileController = new StdProfileViewCtrl(sharedDatabase.getSelectedName(), access, db, username);
             FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
             fxmlLoader.setController(profileController);
             Parent root = fxmlLoader.load();
@@ -73,7 +84,7 @@ public class StdDashCtrl {
             Scene previousScene = currentStage.getScene(); // Save current scene
 
 
-            // profileController.setPreviousScene(previousScene);
+            //profileController.setPreviousScene(previousScene);
 
             // Switch to the new scene
             currentStage.setScene(new Scene(root, 600, 400));
@@ -87,18 +98,24 @@ public class StdDashCtrl {
     }
 
     @FXML
-    void addStd(ActionEvent event) throws IOException {
-        try{
+    public void addStd(ActionEvent event) throws IOException {
+        try {
             Stage currentStage = (Stage) btnAddStd.getScene().getWindow();
             Scene previousScene = currentStage.getScene(); // Save current scene
 
-            StdCreateCtrl stdCreateCtrl = new StdCreateCtrl(previousScene, db);
+            StdCreateCtrl stdCreateCtrl = new StdCreateCtrl(previousScene ,db,username);
             FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileAdd.fxml"));
             fxmlLoader.setController(stdCreateCtrl);
             Parent root = fxmlLoader.load();
 
+
+
+            //profileController.setPreviousScene(previousScene);
+
+            // Switch to the new scene
             currentStage.setScene(new Scene(root, 600, 400));
-            currentStage.setTitle("Add Student");
+            currentStage.setTitle("Student Profile");
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -110,8 +127,8 @@ public class StdDashCtrl {
     public void initialize() throws SQLException {
         //Populating the List view with the student names and student IDs
         List<String> viewableInfo = new ArrayList<>();
-        List<String> StudentNames = db.getColumnValues("UMS_Data_Students", "Name");
-        List<String> StudentIDs = db.getColumnValues("UMS_Data_Students", "Student ID");
+        List<String> StudentNames = db.getColumnValues("UMS_Data_Students ", "Name");
+        List<String> StudentIDs = db.getColumnValues("UMS_Data_Students ", "Student ID");
 
         for(int i = 0; i < StudentIDs.size(); i++){
             viewableInfo.add(StudentIDs.get(i) + ":" + StudentNames.get(i));
@@ -141,7 +158,7 @@ public class StdDashCtrl {
             viewProfile.setOnAction(event -> {
                 String item = cell.getItem();
                 try {
-                    StdProfileViewCtrl profileController = new StdProfileViewCtrl(item, access, db);
+                    StdProfileViewCtrl profileController = new StdProfileViewCtrl(item, access, db, username);
 
                     FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdViewProfile.fxml"));
                     fxmlLoader.setController(profileController);
@@ -170,7 +187,7 @@ public class StdDashCtrl {
                     Stage currentStage = (Stage) listViewStudent.getScene().getWindow();
                     Scene previousScene = currentStage.getScene(); // Save current scene
 
-                    StdProfileEditCtrl stdProfileEditCtrl = new StdProfileEditCtrl(db, item);
+                    StdProfileEditCtrl stdProfileEditCtrl = new StdProfileEditCtrl(db, item, username);
                     FXMLLoader fxmlLoader = new FXMLLoader(StdDashApp.class.getResource("StdProfileEditing.fxml"));
                     fxmlLoader.setController(stdProfileEditCtrl);
                     Parent root = fxmlLoader.load();
@@ -178,8 +195,10 @@ public class StdDashCtrl {
                     currentStage.setScene(new Scene(root, 600, 400));
                     currentStage.setTitle("Edit Student");
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             });
 
             //Creates the delete option for the right click menu
@@ -191,7 +210,7 @@ public class StdDashCtrl {
                 String[] parts = item.split(":");
                 System.out.println(parts[0]);
                 try {
-                    db.deleteRowFromTable("UMS_Data_Students", "Student ID", parts[0]);
+                    db.deleteRowFromTable("UMS_Data_Students ", "Student ID", parts[0]);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -210,10 +229,13 @@ public class StdDashCtrl {
                 }
             });
 
+            /*
             if(access.equals("student") || access.equals("faculty")){
                 deleteItem.setDisable(true);
                 editProfile.setDisable(true);
             }
+
+             */
 
             return cell;
             });
